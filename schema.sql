@@ -25,3 +25,8 @@ CREATE TABLE IF NOT EXISTS entry (
     activity_id INTEGER NOT NULL,
     FOREIGN KEY (activity_id) REFERENCES activity(activity_id)
 );
+
+INSERT OR IGNORE INTO category(category_name) VALUES
+('General');
+
+
