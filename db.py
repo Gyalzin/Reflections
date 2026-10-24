@@ -1,5 +1,6 @@
 """
-This module provides a function to get a connection to the SQLite database.
+This module contains functions for interacting with the SQLite database.
+It provides functions to get a connection to the database, initialize the database, add activities and entries, and retrieve entries.
 Author: Gyalzin Dorji
 Created: 2024-06-10
 Last Modified: 2024-06-10
@@ -61,3 +62,19 @@ def add_entry(activity_id, start_time, end_time, mood = None, note = None):
     conn.execute("INSERT INTO entry (activity_id, start_time, end_time, mood, note) VALUES (?, ?, ?, ?, ?)", (activity_id, start_time, end_time, mood, note))
     conn.commit()
     conn.close()
+    
+    
+ # This function retrieves all entries from the entry table for a specific day.
+ # It takes one parameter: day, which is a string in the format 'YYYY-MM-DD'.
+ # It executes a SELECT SQL command to retrieve all entries for the specified day, ordered by start_time.
+ # It returns a list of rows, where each row is a sqlite3.Row object that allows us to access the columns by name. It closes the connection after retrieving the data.   
+
+def get_entries(day):
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM entry WHERE date(start_time) = ? ORDER BY start_time", (day,)).fetchall()
+    conn.close()
+    return rows
+    
+    
+    
+    
