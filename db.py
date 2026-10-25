@@ -1,9 +1,15 @@
 """
-This module contains functions for interacting with the SQLite database.
-It provides functions to get a connection to the database, initialize the database, add activities and entries, and retrieve entries.
+This module handles database operations for the Reflections application.
+
+- Connects to the SQLite database (reflections.db).
+- Initialises database tables using schema.sql.
+- Adds activities and entries, and retrieves entries for a specific day.
+- Enables foreign key constraints to maintain database relationships.
+- Provides functions for main.py to use in Flask routes.
+Dependencies:sqlite3, pathlib
 Author: Gyalzin Dorji
-Created: 2024-06-10
-Last Modified: 2024-06-10
+Created: 2026-10-23
+Last Modified: 2026-10-24
 """
 
 import sqlite3

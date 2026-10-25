@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflections</title>
 </head>
+
 <body>
+
     <h1>Reflections</h1>
     <p>Welcome to Reflections!</p>
+    <ul>
+        {% for e in entries %}
+        <li>{{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}</li>
+        {% endfor %}
+    </ul>
 
 </body>
 </html>
