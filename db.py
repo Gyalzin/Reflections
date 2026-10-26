@@ -58,6 +58,7 @@ def add_activity(activity_name, category_id):
     conn.commit()
     conn.close()
     
+    
 # This function adds a new entry to the entry table in the database.
 # It takes five parameters: activity_id, start_time, end_time, mood, and note
 # It executes an INSERT INTO SQL command to add the new entry to the database.
@@ -81,6 +82,31 @@ def get_entries(day):
     conn.close()
     return rows
     
+    
+# This function retrieves the activity_id for a given activity_name from the activity table.
+# If the activity_name does not exist in the table, it creates a new activity with the given activity_name and category_id, and returns the new activity_id.
+# It takes two parameters:
+# - activity_name: the name of the activity to retrieve or create.
+# - category_id: the category ID to use when creating a new activity (default is 1).
+# It executes a SELECT SQL command to check if the activity_name exists in the table. If it does, it retrieves the activity_id. 
+# If it does not, it executes an INSERT SQL command to create a new activity and retrieves the new activity_id. It commits the changes to the database and closes the connection.
+
+
+def get_or_create_activity(activity_name, category_id = 1):
+    conn = get_connection()
+    row = (conn.execute(
+        "SELECT activity_id FROM activity WHERE activity_name = ?", (activity_name,)
+    )).fetchone()
+    if row:
+        activity_id = row["activity_id"]
+    else:
+        cur = conn.execute(
+            "INSERT INTO activity (activity_name, category_id) VALUES (?,?)", (activity_name, category_id),
+        )
+        conn.commit()
+        activity_id = cur.lastrowid
+    conn.close()
+    return activity_id
     
     
     

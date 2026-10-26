@@ -1,3 +1,17 @@
+<!--
+This is the index.html file for the Reflections app. It displays a list of entries and provides a form to add new entries.
+The entries are displayed in an unordered list, and each entry shows the start time, end time, and note (if available).
+The form allows users to input activity, start time, end time, mood, and an optional note.
+When the form is submitted, it sends a POST request to the /add_entry route to add the new entry to the database.
+
+Created by: Gyalzin Dorji
+Date Created: 2026-10-24
+Last Modified: 2026-10-26
+-->
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +29,15 @@
         <li>{{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}</li>
         {% endfor %}
     </ul>
+
+    <form method = "POST" action = "/save_entry">
+        <label>Activity <input type = "text" name = "activity" required></label><br>
+        <label>Start Time <input type = "datetime-local" name = "start_time" required> </label><br>
+        <label>End Time <input type = "datetime-local" name = "end_time" required> </label><br>
+        <label> Mood <input type = "number" name = "mood" min = "1" max = "5"> </label><br>
+        <label> Note <textarea name = "note"></textarea> </label><br>
+        <input type = "submit" value = "Save Entry">   
+    </form>
 
 </body>
 </html>
