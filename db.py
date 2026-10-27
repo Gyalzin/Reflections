@@ -91,7 +91,6 @@ def get_entries(day):
 # It executes a SELECT SQL command to check if the activity_name exists in the table. If it does, it retrieves the activity_id. 
 # If it does not, it executes an INSERT SQL command to create a new activity and retrieves the new activity_id. It commits the changes to the database and closes the connection.
 
-
 def get_or_create_activity(activity_name, category_id = 1):
     conn = get_connection()
     row = (conn.execute(
@@ -107,6 +106,16 @@ def get_or_create_activity(activity_name, category_id = 1):
         activity_id = cur.lastrowid
     conn.close()
     return activity_id
+
+# This function deletes an entry from the entry table in the database based on the provided entry_id.
+# It takes one parameter: entry_id, which is the ID of the entry to be deleted
+# It executes a DELETE SQL command to remove the entry from the database.
+
+def delete_entry(entry_id):
+    conn = get_connection()
+    conn.execute("DELETE FROM entry where entry_id = ?", (entry_id,))
+    conn.commit()
+    conn.close()
     
     
     

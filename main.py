@@ -43,6 +43,16 @@ def save_entry():
     return redirect(url_for('home'))
 
 
+# This route handles the deletion of an entry from the database.
+# It takes the entry_id as a parameter from the URL and calls the delete_entry function from the db module to remove the entry from the database. 
+# After deleting the entry, it redirects the user back to the home page, preserving the current day in the query parameters.
+
+@app.route('/delete_entry/<int:entry_id>', methods = ['POST'])
+def remove_entry(entry_id):
+    db.delete_entry(entry_id)
+    day = request.form.get('day', date.today().isoformat())
+    return redirect(url_for('home',day = day))
+
 if __name__ == '__main__':
     app.run(debug=True) 
     
