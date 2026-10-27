@@ -25,6 +25,11 @@ Last Modified: 2026-10-26
     <h1>Reflections</h1>
     <p>Welcome to Reflections!</p>
     <h2> {{day}} </h2>
+    <p>
+        <a href = "/?day={{prev_day}}">&larr; Previous day</a>
+        <a href = "/">Today</a>
+        <a href = "/?day={{next_day}}">Next day &rarr;</a>
+    </p>
     <ul>
         {% for e in entries %}
         <li>{{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}</li>

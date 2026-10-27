@@ -1,18 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from datetime import date
+from datetime import date, timedelta
 import db
 
 app = Flask(__name__)
 
 # This route handles the home page of the application.
-# It retrieves the entries for a specific day (in this case, '2026-10-23') from the database using the get_entries function from the db module.
-# It then renders the 'index.html' template, passing the retrieved entries and the day as context variables to be used in the template.
+# It retrieves the day from the query parameters or defaults to today's date. 
+# It then calculates the previous and next days and retrieves the entries for the specified day from the database. 
+# Finally, it renders the 'index.html' template with the retrieved entries and day information.
+
 
 @app.route('/')
 def home():
     day = request.args.get('day', date.today().isoformat())  # Get the day from query parameters or use today's date
+    current = date.fromisoformat(day) # Convert the day string to a date object
+    prev_day = (current - timedelta(days = 1)).isoformat() 
+    next_day = (current + timedelta(days = 1)).isoformat() 
     entries = db.get_entries(day)
-    return render_template('index.html', entries=entries, day = day)
+    return render_template('index.html', entries=entries, day = day, prev_day = prev_day, next_day = next_day)
 
 
 # This route handles the form submission for saving a new entry.
