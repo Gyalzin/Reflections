@@ -72,6 +72,25 @@ def edit_entry(entry_id):
         return redirect(url_for('home'))
     return render_template('edit.html', entry = entry)
 
+
+# This route handles the saving of changes made to an existing entry in the database.
+# It takes the entry_id as a parameter from the URL and retrieves the updated form data from the request object. 
+# It processes the form data, updates the corresponding entry in the database using the update_entry function from the db module.
+
+@app.route('/update_entry/<int:entry_id>', methods = ['POST'])
+def save_changes(entry_id):
+    activity = request.form['activity']
+    start_time = request.form['start_time'].replace('T', ' ') + ':00' # Convert to datetime format
+    end_time = request.form['end_time'].replace('T', ' ') + ':00' # Convert to datetime format
+    mood = request.form.get('mood')
+    mood = int(mood) if mood else None # Convert mood to integer if it exists, otherwise set to None
+    note = request.form.get('note') or None # Set note to None if it doesn't exist
+    
+    activity_id = db.get_or_create_activity(activity)
+    db.update_entry(entry_id, activity_id, start_time, end_time, mood, note)
+    return redirect(url_for ('home', day = start_time[:10])) # Redirect to the home page with the day of the updated entry. It extracts the date part from the start_time string (first 10 characters) to use as the day parameter in the redirect URL.
+    
+
 if __name__ == '__main__':
     app.run(debug=True) 
     

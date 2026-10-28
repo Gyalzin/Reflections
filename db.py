@@ -132,5 +132,18 @@ def get_entry(entry_id):
     conn.close()
     return row
     
-    
-    
+  
+  
+# This function updates an existing entry in the entry table in the database based on the provided entry_id.
+# It executes an UPDATE SQL command to modify the entry in the database with the new values provided for activity_id, start_time, end_time, mood, and note.
+# It commits the changes to the database and closes the connection.
+  
+def update_entry(entry_id, activity_id, start_time, end_time, mood, note):
+    conn = get_connection()
+    conn.execute(
+        """UPDATE entry
+           SET activity_id = ?, start_time = ?, end_time = ?, mood = ?, note = ?
+           WHERE entry_id = ?""",
+        (activity_id, start_time, end_time, mood, note, entry_id),)
+    conn.commit()
+    conn.close()
