@@ -117,5 +117,20 @@ def delete_entry(entry_id):
     conn.commit()
     conn.close()
     
+# This function retrieves a specific entry from the entry table in the database based on the provided entry_id.
+# It takes one parameter: entry_id, which is the ID of the entry to be retrieved
+# It executes a SELECT SQL command to retrieve the entry from the database, joining with the activity table to get the activity_name associated with the entry.
+# It returns a single row as a sqlite3.Row object that allows us to access the columns by name. 
+# It closes the connection after retrieving the data.   
+    
+def get_entry(entry_id):
+    conn = get_connection()
+    row = conn.execute("""SELECT entry.*, activity.activity_name 
+                       FROM entry
+                       JOIN activity ON entry.activity_id = activity.activity_id
+                       WHERE entry.entry_id = ?""", (entry_id,),).fetchone()
+    conn.close()
+    return row
+    
     
     

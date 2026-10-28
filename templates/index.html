@@ -6,11 +6,8 @@ When the form is submitted, it sends a POST request to the /add_entry route to a
 
 Created by: Gyalzin Dorji
 Date Created: 2026-10-24
-Last Modified: 2026-10-26
+Last Modified: 2026-10-28
 -->
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +35,7 @@ Last Modified: 2026-10-26
                 <input type = "hidden" name = "day" value = "{{day}}">
                 <button type = "submit">Delete</button>
             </form>
+            <a href = "/edit_entry/{{e['entry_id']}}">Edit</a>
         </li>
         {% endfor %}
     </ul>

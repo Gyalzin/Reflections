@@ -1,3 +1,10 @@
+# This is the main application file for a Flask web application that allows users to log and manage their daily activities, moods, and notes.
+# It imports necessary modules, sets up routes for the application, and defines functions to handle user interactions with the application.
+# The application uses a SQLite database to store activity entries and provides functionality to add, edit, and delete entries.
+# Created: 2026-10-23
+# Last Modified: 2026-10-28
+# Created by: Gyalzin Dorji
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import date, timedelta
 import db
@@ -52,6 +59,18 @@ def remove_entry(entry_id):
     db.delete_entry(entry_id)
     day = request.form.get('day', date.today().isoformat())
     return redirect(url_for('home',day = day))
+
+
+# This route handles the editing of an entry in the database.
+# It takes the entry_id as a parameter from the URL and retrieves the corresponding entry from the database using the get_entry function from the db module. 
+# If the entry does not exist, it redirects the user back to the home page. Otherwise, it renders the 'edit.html' template with the retrieved entry data, allowing the user to edit the entry.
+
+@app.route('/edit_entry/<int:entry_id>')
+def edit_entry(entry_id):
+    entry = db.get_entry(entry_id)
+    if entry is None:
+        return redirect(url_for('home'))
+    return render_template('edit.html', entry = entry)
 
 if __name__ == '__main__':
     app.run(debug=True) 
