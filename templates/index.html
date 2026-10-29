@@ -40,13 +40,22 @@ Last Modified: 2026-10-28
         {% endfor %}
     </ul>
 
-    <form method = "POST" action = "/save_entry">
-        <label>Activity <input type = "text" name = "activity" required></label><br>
-        <label>Start Time <input type = "datetime-local" name = "start_time" required> </label><br>
-        <label>End Time <input type = "datetime-local" name = "end_time" required> </label><br>
-        <label> Mood <input type = "number" name = "mood" min = "1" max = "5"> </label><br>
-        <label> Note <textarea name = "note"></textarea> </label><br>
-        <input type = "submit" value = "Save Entry">   
+
+    {% if errors %}
+    <ul class="errors">
+        {% for message in errors %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" action="/save_entry">
+        <label>Activity <input type="text" name="activity" value="{{ form.get('activity', '') }}" required></label><br>
+        <label>Start Time <input type="datetime-local" name="start_time" value="{{ form.get('start_time', '') }}" required></label><br>
+        <label>End Time <input type="datetime-local" name="end_time" value="{{ form.get('end_time', '') }}" required></label><br>
+        <label>Mood <input type="number" name="mood" min="1" max="5" value="{{ form.get('mood', '') }}"></label><br>
+        <label>Note <textarea name="note">{{ form.get('note', '') }}</textarea></label><br>
+        <input type="submit" value="Add Entry">
     </form>
 
 </body>

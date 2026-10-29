@@ -13,25 +13,17 @@ app = Flask(__name__)
 
 # This route handles the home page of the application.
 # It retrieves the day from the query parameters or defaults to today's date. 
-# It then calculates the previous and next days and retrieves the entries for the specified day from the database. 
-# Finally, it renders the 'index.html' template with the retrieved entries and day information.
-
 
 @app.route('/')
 def home():
     day = request.args.get('day', date.today().isoformat())  # Get the day from query parameters or use today's date
-    current = date.fromisoformat(day) # Convert the day string to a date object
-    prev_day = (current - timedelta(days = 1)).isoformat() 
-    next_day = (current + timedelta(days = 1)).isoformat() 
-    entries = db.get_entries(day)
-    return render_template('index.html', entries=entries, day = day, prev_day = prev_day, next_day = next_day)
+    return render_day(day)
 
 
-# This route handles the form submission for saving a new entry.
-# It retrieves the form data from the request object, processes it, and then redirects the user back to the home page.
-# This route is defined to handle POST requests to the '/save_entry' URL. It retrieves the activity, start time, end time, mood, and note from the form data. 
-# The start and end times are converted to a datetime format by replacing the 'T' character with a space and appending ':00'. The mood is converted to an integer if it exists; otherwise, it is set to None.
-# The note is also set to None if it doesn't exist. Finally, the user is redirected back to the home page after processing the form data.
+# This function handles submitting a new activity entry from the web form. 
+# It retrieves the activity name, start and end times, mood, and optional note from the submitted form, then converts the values into the appropriate formats. 
+# It calls validate_entry() to check for errors; if any are found, it redisplays the page with the errors and the user's existing form data. 
+# If validation passes, it gets or creates the activity in the database, saves the entry, and redirects the user to that day's timeline.
 
 @app.route('/save_entry', methods = ['POST'])
 def save_entry():
@@ -44,10 +36,15 @@ def save_entry():
     mood = int(mood) if mood else None # Convert mood to integer if it exists, otherwise set to None
     note = request.form.get('note')
     note = note if note else None # Set note to None if it doesn't exist
-    print(f"Activity: {activity}, Start Time: {start_time}, End Time: {end_time}, Mood: {mood}, Note: {note}")
+    
+    errors = validate_entry(activity, start_time, end_time, mood)
+    if errors:
+        return render_day(start_time[:10], errors = errors, form = request.form)
+    
+    
     activity_id = db.get_or_create_activity(activity)
     db.add_entry(activity_id, start_time, end_time, mood, note)
-    return redirect(url_for('home'))
+    return redirect(url_for('home', day = start_time[:10]))
 
 
 # This route handles the deletion of an entry from the database.
@@ -89,7 +86,36 @@ def save_changes(entry_id):
     activity_id = db.get_or_create_activity(activity)
     db.update_entry(entry_id, activity_id, start_time, end_time, mood, note)
     return redirect(url_for ('home', day = start_time[:10])) # Redirect to the home page with the day of the updated entry. It extracts the date part from the start_time string (first 10 characters) to use as the day parameter in the redirect URL.
+
+
+# This function checks whether an activity entry is valid and collects any errors in a list. 
+# It checks that the activity name isn't empty, that the end time comes after the start time, and that the mood is between 1 and 5 if one is provided.
+# Finally, it returns the list of errors, which will be empty if all checks pass.
+
+def validate_entry(activity, start_time, end_time, mood):
+    errors = []
+    if not activity.strip():
+        errors.append("Please give the activity a name.")
+    if end_time <=start_time:
+        errors.append("The end time needs to come after the start time.")
+    elif start_time[:10] != end_time[:10]:
+        errors.append("An activity needs to start and end on the same day. You can add a second entry for the next day.")
+    if mood is not None and not 1 <= mood <= 5:
+        errors.append("Mood should be a number from 1 to 5.")
+    return errors
     
+# This function prepares everything needed to display a particular day's activity timeline.
+# It converts the date string into a date object, calculates the previous and next days, retrieves the day's activities from the database, and passes all this information to index.html using render_template(). 
+# The errors and form parameters are optional, allowing the page to display validation errors and preserve previously entered form data when needed.
+
+def render_day(day, errors = None, form = None):
+    current = date.fromisoformat(day)
+    prev_day = (current - timedelta(days=1)).isoformat()
+    next_day = (current + timedelta(days=1)).isoformat()
+    entries = db.get_entries(day)
+    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True) 
