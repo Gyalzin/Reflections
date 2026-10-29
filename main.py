@@ -73,6 +73,7 @@ def edit_entry(entry_id):
 # This route handles the saving of changes made to an existing entry in the database.
 # It takes the entry_id as a parameter from the URL and retrieves the updated form data from the request object. 
 # It processes the form data, updates the corresponding entry in the database using the update_entry function from the db module.
+# It also checks for errors
 
 @app.route('/update_entry/<int:entry_id>', methods = ['POST'])
 def save_changes(entry_id):
@@ -82,6 +83,18 @@ def save_changes(entry_id):
     mood = request.form.get('mood')
     mood = int(mood) if mood else None # Convert mood to integer if it exists, otherwise set to None
     note = request.form.get('note') or None # Set note to None if it doesn't exist
+    
+    errors = validate_entry(activity, start_time, end_time, mood)
+    if errors:
+        entry = {
+            'entry_id' : entry_id,
+            'activity_name' : activity,
+            'start_time' : start_time,
+            'end_time' : end_time,
+            'mood' : mood,
+            'note' : note,
+        }
+        return render_template('edit.html', entry = entry, errors = errors)
     
     activity_id = db.get_or_create_activity(activity)
     db.update_entry(entry_id, activity_id, start_time, end_time, mood, note)
