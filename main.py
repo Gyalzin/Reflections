@@ -116,16 +116,31 @@ def validate_entry(activity, start_time, end_time, mood):
     if mood is not None and not 1 <= mood <= 5:
         errors.append("Mood should be a number from 1 to 5.")
     return errors
+
+
+
+# Converts a timestamp into the number of minutes since midnight by extracting the hour and minute. Returns the result as an integer.
+def minutes_since_midnight(timestamp):
+    return int(timestamp[11:13]) * 60 + int(timestamp[14:16])
     
 # This function prepares everything needed to display a particular day's activity timeline.
 # It converts the date string into a date object, calculates the previous and next days, retrieves the day's activities from the database, and passes all this information to index.html using render_template(). 
 # The errors and form parameters are optional, allowing the page to display validation errors and preserve previously entered form data when needed.
+# Prepares and displays a day's timeline by retrieving entries from the database and calculating their position and height as percentages of a 24-hour timeline. 
+# It also determines the previous and next dates and passes the data, errors, and form values to the HTML template for rendering.
 
 def render_day(day, errors = None, form = None):
     current = date.fromisoformat(day)
     prev_day = (current - timedelta(days=1)).isoformat()
     next_day = (current + timedelta(days=1)).isoformat()
-    entries = db.get_entries(day)
+    entries = []
+    for row in db.get_entries(day):
+        entry = dict(row)
+        start = minutes_since_midnight(entry['start_time'])
+        end = minutes_since_midnight(entry['end_time'])
+        entry['top'] = start / 1440 *100
+        entry['height'] = max(end - start, 15)/1440 * 100
+        entries.append(entry)
     return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {})
 
 

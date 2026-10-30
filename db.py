@@ -71,14 +71,18 @@ def add_entry(activity_id, start_time, end_time, mood = None, note = None):
     conn.close()
     
     
- # This function retrieves all entries from the entry table for a specific day.
- # It takes one parameter: day, which is a string in the format 'YYYY-MM-DD'.
- # It executes a SELECT SQL command to retrieve all entries for the specified day, ordered by start_time.
- # It returns a list of rows, where each row is a sqlite3.Row object that allows us to access the columns by name. It closes the connection after retrieving the data.   
+ # This function retrieves entries for a specified day from the SQLite database by joining the `entry` and `activity` tables. 
+ # Filters entries by date, sorts them by start time, and returns the results. 
+ # Closes the database connection after retrieving the data.  
 
 def get_entries(day):
     conn = get_connection()
-    rows = conn.execute("SELECT * FROM entry WHERE date(start_time) = ? ORDER BY start_time", (day,)).fetchall()
+    rows = conn.execute("""SELECT entry.*, activity.activity_name
+                        FROM entry
+                        JOIN activity ON entry.activity_id = activity.activity_id
+                        WHERE date(entry.start_time)= ?
+                        ORDER BY entry.start_time""",
+                        (day,),).fetchall()
     conn.close()
     return rows
     

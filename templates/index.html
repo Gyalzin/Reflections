@@ -8,7 +8,6 @@ Created by: Gyalzin Dorji
 Date Created: 2026-10-24
 Last Modified: 2026-10-28
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +28,9 @@ Last Modified: 2026-10-28
     </p>
     <ul>
         {% for e in entries %}
-        <li>{{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}
+        <li>{{ e["activity_name"] }}: {{ e["start_time"] }} to {{ e["end_time"] }}
+            (top {{ e["top"]|round(1) }}%, height {{ e["height"]|round(1) }}%)
+            {{ e["note"] or "" }}
             <form method = "POST" action = "/delete_entry/{{e['entry_id']}}" style = "display:inline"
                 onsubmit = "return confirm('Delete this entry?');">
                 <input type = "hidden" name = "day" value = "{{day}}">
