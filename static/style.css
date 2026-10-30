@@ -1,0 +1,46 @@
+
+/*
+.timeline is a tall box, and position: relative makes it the frame that everything inside is placed against. 
+.label and .block uses position: absolute, so its top and height percentages are measured against that frame. 
+The block colours are slightly see-through so overlapping entries stay visible.
+*/
+.timeline {
+    position: relative;
+    height: 1920px;
+    margin: 1 rem 0 2rem;
+    background: #faf7f2;
+    border-left: 2px solid #d8d2c8;
+}
+
+.label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding-left: 0.5rem;
+    border-top: 1px dashed #e3ddd2;
+    color: #b5ab0a;
+    font-size: 0.8rem;
+}
+
+.block {
+    position:absolute;
+    left: 110px;
+    right: 10px;
+    box-sizing: border-box;
+    padding: 2px 8px;
+    overflow: hidden;
+    background: rgba(150,190,170,0.75);
+    border: 1px solid rgba(90,130,110,0.6);
+    border-radius: 8px;
+    color: #2f3b34;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.block.hover {
+    background: rgba(150,190,170,0.95);
+}
+
+.errors {
+    color: #a0522d;
+}

@@ -14,6 +14,7 @@ Last Modified: 2026-10-28
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflections</title>
+    <link rel = "stylesheet" href = "{{url_for('static', filename = 'style.css')}}">
 </head>
 
 <body>
@@ -26,21 +27,37 @@ Last Modified: 2026-10-28
         <a href = "/">Today</a>
         <a href = "/?day={{next_day}}">Next day &rarr;</a>
     </p>
+
+    <div class = "timeline">
+        <div class = "label" style = "top: 0%;">Midnight</div>
+        <div class="label" style="top: 25%;">Morning</div>
+        <div class="label" style="top: 50%;">Afternoon</div>
+        <div class="label" style="top: 75%;">Evening</div>
+        <div class="label" style="top: 87.5%;">Night</div>
+
+  
+        {% for e in entries %}
+        <a class="block" href="/edit_entry/{{ e['entry_id'] }}"
+           style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;">
+            <strong>{{ e["activity_name"] }}</strong>
+            {{ e["start_time"][11:16] }} to {{ e["end_time"][11:16] }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <h3>Entries</h3>
     <ul>
         {% for e in entries %}
-        <li>{{ e["activity_name"] }}: {{ e["start_time"] }} to {{ e["end_time"] }}
-            (top {{ e["top"]|round(1) }}%, height {{ e["height"]|round(1) }}%)
-            {{ e["note"] or "" }}
-            <form method = "POST" action = "/delete_entry/{{e['entry_id']}}" style = "display:inline"
-                onsubmit = "return confirm('Delete this entry?');">
-                <input type = "hidden" name = "day" value = "{{day}}">
-                <button type = "submit">Delete</button>
+        <li>{{ e["activity_name"] }}: {{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}
+            <form method="POST" action="/delete_entry/{{e['entry_id']}}" style="display:inline"
+                onsubmit="return confirm('Delete this entry?');">
+                <input type="hidden" name="day" value="{{day}}">
+                <button type="submit">Delete</button>
             </form>
-            <a href = "/edit_entry/{{e['entry_id']}}">Edit</a>
+            <a href="/edit_entry/{{e['entry_id']}}">Edit</a>
         </li>
         {% endfor %}
     </ul>
-
 
     {% if errors %}
     <ul class="errors">
