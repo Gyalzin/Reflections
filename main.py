@@ -2,7 +2,7 @@
 # It imports necessary modules, sets up routes for the application, and defines functions to handle user interactions with the application.
 # The application uses a SQLite database to store activity entries and provides functionality to add, edit, and delete entries.
 # Created: 2026-10-23
-# Last Modified: 2026-10-28
+# Last Modified: 2026-10-31
 # Created by: Gyalzin Dorji
 
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -24,10 +24,17 @@ def home():
 # It retrieves the activity name, start and end times, mood, and optional note from the submitted form, then converts the values into the appropriate formats. 
 # It calls validate_entry() to check for errors; if any are found, it redisplays the page with the errors and the user's existing form data. 
 # If validation passes, it gets or creates the activity in the database, saves the entry, and redirects the user to that day's timeline.
+# If someone picks an existing activity, its name goes straight through, and get_or_create_activity finds it. 
+# If they pick “Other”, the typed name is used, and a brand-new activity is created under General. Your validation still catches an empty name.
 
 @app.route('/save_entry', methods = ['POST'])
 def save_entry():
-    activity = request.form['activity']
+    choice = request.form.get('activity_choice', '')
+    if choice == '__other__':
+        activity = request.form.get('new_activity', '')
+    else:
+        activity = choice
+    activity = activity.strip()
     start_time = request.form['start_time']
     start_time = start_time.replace('T', ' ') + ':00' # Convert to datetime format
     end_time = request.form['end_time']
@@ -184,7 +191,7 @@ def render_day(day, errors = None, form = None):
     next_day = (current + timedelta(days=1)).isoformat()
     entries = layout_entries(db.get_entries(day))
     
-    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {})
+    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities())
 
 
 

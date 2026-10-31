@@ -1,12 +1,14 @@
 <!--
 This is the index.html file for the Reflections app. It displays a list of entries and provides a form to add new entries.
-The entries are displayed in an unordered list, and each entry shows the start time, end time, and note (if available).
-The form allows users to input activity, start time, end time, mood, and an optional note.
-When the form is submitted, it sends a POST request to the /add_entry route to add the new entry to the database.
+Displays the main Reflections page, including a 24-hour timeline of recorded activities.
+Allows users to navigate between dates, view, edit, and delete entries, and add new activities.
+Collects activity details such as start time, end time, mood, and optional notes.
+Uses Flask and Jinja2 to display dynamic data, CSS for styling, and JavaScript to handle the new activity input.
+Requires the Flask backend to provide activity entries, available activities, date navigation values, and form validation errors.
 
 Created by: Gyalzin Dorji
 Date Created: 2026-10-24
-Last Modified: 2026-10-28
+Last Modified: 2026-10-31
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +16,7 @@ Last Modified: 2026-10-28
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflections</title>
-    <link rel = "stylesheet" href = "{{url_for('static', filename = 'style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -23,24 +25,23 @@ Last Modified: 2026-10-28
     <p>Welcome to Reflections!</p>
     <h2> {{day}} </h2>
     <p>
-        <a href = "/?day={{prev_day}}">&larr; Previous day</a>
-        <a href = "/">Today</a>
-        <a href = "/?day={{next_day}}">Next day &rarr;</a>
+        <a href="/?day={{prev_day}}">&larr; Previous day</a>
+        <a href="/">Today</a>
+        <a href="/?day={{next_day}}">Next day &rarr;</a>
     </p>
 
-    <div class = "timeline">
-        <div class = "label" style = "top: 0%;">Midnight</div>
+    <div class="timeline">
+        <div class="label" style="top: 0%;">Midnight</div>
         <div class="label" style="top: 25%;">Morning</div>
         <div class="label" style="top: 50%;">Afternoon</div>
         <div class="label" style="top: 75%;">Evening</div>
         <div class="label" style="top: 87.5%;">Night</div>
 
-  
         {% for e in entries %}
         <a class="block" href="/edit_entry/{{ e['entry_id'] }}"
-            style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;
-            left: calc(110px + (100% - 120px) * {{ e['lane'] }} / {{ e['lanes'] }});
-            width: calc((100% - 120px) / {{ e['lanes'] }});">
+           style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;
+                  left: calc(110px + (100% - 120px) * {{ e['lane'] }} / {{ e['lanes'] }});
+                  width: calc((100% - 120px) / {{ e['lanes'] }});">
             <strong>{{ e["activity_name"] }}</strong>
             {{ e["start_time"][11:16] }} to {{ e["end_time"][11:16] }}
         </a>
@@ -70,13 +71,46 @@ Last Modified: 2026-10-28
     {% endif %}
 
     <form method="POST" action="/save_entry">
-        <label>Activity <input type="text" name="activity" value="{{ form.get('activity', '') }}" required></label><br>
+        <label>Activity
+            <select name="activity_choice" id="activity_choice">
+                {% for a in activities %}
+                <option value="{{ a['activity_name'] }}"
+                    {% if form.get('activity_choice') == a['activity_name'] %}selected{% endif %}>
+                    {{ a['activity_name'] }}
+                </option>
+                {% endfor %}
+                <option value="__other__"
+                    {% if form.get('activity_choice') == '__other__' %}selected{% endif %}>
+                    Other (new activity)...
+                </option>
+            </select>
+        </label><br>
+        <div id="new_activity_row">
+            <label>New activity name
+                <input type="text" name="new_activity" id="new_activity" value="{{ form.get('new_activity', '') }}">
+            </label><br>
+        </div>
         <label>Start Time <input type="datetime-local" name="start_time" value="{{ form.get('start_time', '') }}" required></label><br>
         <label>End Time <input type="datetime-local" name="end_time" value="{{ form.get('end_time', '') }}" required></label><br>
         <label>Mood <input type="number" name="mood" min="1" max="5" value="{{ form.get('mood', '') }}"></label><br>
         <label>Note <textarea name="note">{{ form.get('note', '') }}</textarea></label><br>
         <input type="submit" value="Add Entry">
     </form>
+
+    <script>
+        const choice = document.getElementById('activity_choice');
+        const newRow = document.getElementById('new_activity_row');
+        const newInput = document.getElementById('new_activity');
+
+        function toggleNewActivity() {
+            const isOther = choice.value === '__other__';
+            newRow.style.display = isOther ? '' : 'none';
+            newInput.required = isOther;
+        }
+
+        choice.addEventListener('change', toggleNewActivity);
+        toggleNewActivity();
+    </script>
 
 </body>
 </html>

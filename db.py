@@ -9,7 +9,7 @@ This module handles database operations for the Reflections application.
 Dependencies:sqlite3, pathlib
 Author: Gyalzin Dorji
 Created: 2026-10-23
-Last Modified: 2026-10-24
+Last Modified: 2026-10-31
 """
 
 import sqlite3
@@ -151,3 +151,14 @@ def update_entry(entry_id, activity_id, start_time, end_time, mood, note):
         (activity_id, start_time, end_time, mood, note, entry_id),)
     conn.commit()
     conn.close()
+ 
+ 
+ # The function retrieves the activity_id and the activity name from the activity table
+    
+def get_activities():
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT activity_id, activity_name FROM activity ORDER BY activity_name"
+    ).fetchall()
+    conn.close()
+    return rows
