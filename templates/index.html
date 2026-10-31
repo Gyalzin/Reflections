@@ -38,7 +38,9 @@ Last Modified: 2026-10-28
   
         {% for e in entries %}
         <a class="block" href="/edit_entry/{{ e['entry_id'] }}"
-           style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;">
+            style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;
+            left: calc(110px + (100% - 120px) * {{ e['lane'] }} / {{ e['lanes'] }});
+            width: calc((100% - 120px) / {{ e['lanes'] }});">
             <strong>{{ e["activity_name"] }}</strong>
             {{ e["start_time"][11:16] }} to {{ e["end_time"][11:16] }}
         </a>

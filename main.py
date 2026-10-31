@@ -122,6 +122,55 @@ def validate_entry(activity, start_time, end_time, mood):
 # Converts a timestamp into the number of minutes since midnight by extracting the hour and minute. Returns the result as an integer.
 def minutes_since_midnight(timestamp):
     return int(timestamp[11:13]) * 60 + int(timestamp[14:16])
+
+
+# This function makes overlapping entries sit side by side, so none of them hides another.
+# Organises activity entries for display on a 24-hour timeline.
+# Calculates each activity's position and height based on its start and end times.
+# Assigns lanes to overlapping activities so they appear side by side without overlapping.
+# Calculates the number of lanes needed for each group to determine the width of each activity.
+
+def layout_entries(rows):
+    entries = []
+    for row in rows:
+        entry = dict(row)
+        start = minutes_since_midnight(entry['start_time'])
+        end = max(minutes_since_midnight(entry['end_time']), start +15)
+        entry['start_min'] = start
+        entry['end_min'] = end
+        entry['top'] = start / 1440 * 100
+        entry['height'] = (end - start) / 1440 * 100
+        entries.append(entry)
+        
+    # give each entry a lane, grouping entries that overlap    
+    group = -1
+    group_end = 0
+    lane_ends = []
+    
+    for e in entries:
+        if e['start_min'] >= group_end: # nothing overlaps, so start a new group
+            group += 1
+            lane_ends = []
+            
+        for i in range(len(lane_ends)):
+            if lane_ends[i] <= e['start_min']: # this lane is free again
+                e['lane'] = i
+                lane_ends[i] = e['end_min']
+                break
+        else:                                      # No free lane, so open a new one
+            e['lane'] = len(lane_ends)
+            lane_ends.append(e['end_min'])
+        e['group'] = group
+        group_end = max(group_end, e['end_min'])
+        
+    # each group shares the width between its lanes
+    lanes_in_group = {}
+    for e in entries:
+        lanes_in_group[e['group']] = max(lanes_in_group.get(e['group'], 0), e['lane'] + 1)
+    for e in entries:
+        e['lanes'] = lanes_in_group[e['group']]
+    return entries
+            
     
 # This function prepares everything needed to display a particular day's activity timeline.
 # It converts the date string into a date object, calculates the previous and next days, retrieves the day's activities from the database, and passes all this information to index.html using render_template(). 
@@ -133,14 +182,8 @@ def render_day(day, errors = None, form = None):
     current = date.fromisoformat(day)
     prev_day = (current - timedelta(days=1)).isoformat()
     next_day = (current + timedelta(days=1)).isoformat()
-    entries = []
-    for row in db.get_entries(day):
-        entry = dict(row)
-        start = minutes_since_midnight(entry['start_time'])
-        end = minutes_since_midnight(entry['end_time'])
-        entry['top'] = start / 1440 *100
-        entry['height'] = max(end - start, 15)/1440 * 100
-        entries.append(entry)
+    entries = layout_entries(db.get_entries(day))
+    
     return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {})
 
 

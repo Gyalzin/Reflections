@@ -24,8 +24,6 @@ The block colours are slightly see-through so overlapping entries stay visible.
 
 .block {
     position:absolute;
-    left: 110px;
-    right: 10px;
     box-sizing: border-box;
     padding: 2px 8px;
     overflow: hidden;
