@@ -15,31 +15,75 @@ Last Modified: 2026-10-28
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Entry</title>
+    <title>Edit entry - Reflections</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Edit entry</h1>
 
     {% if errors %}
-    <ul class = "errors">
+    <ul class="errors">
         {% for message in errors %}
-        <li> {{message}}</li>
-        {%endfor%}
+        <li>{{ message }}</li>
+        {% endfor %}
     </ul>
     {% endif %}
 
+    {% set is_known = entry['activity_name'] in activity_names %}
 
-    <form method = "POST" action = "/update_entry/{{ entry['entry_id'] }}">
-        <label>Activity<input type = "text" name = "activity" value = "{{ entry['activity_name'] }}" required></label><br>
-        <label>Start Time<input type = "datetime-local" name = "start_time" value = "{{ entry['start_time'] [:16].replace(' ', 'T') }}" required></label><br>
-        <label>End Time<input type = "datetime-local" name = "end_time" value = "{{ entry['end_time'] [:16].replace(' ', 'T') }}" required></label><br>
-        <label>Mood <input type="number" name="mood" min="1" max="5" value="{{ entry['mood'] if entry['mood'] is not none else '' }}"></label><br>
-        <label>Note <textarea name = "note">{{ entry ['note'] or '' }}</textarea></label><br>
-        <input type = "submit" value = "Save Changes">
+    <form method="POST" action="/update_entry/{{ entry['entry_id'] }}">
+        <label>Activity
+            <select name="activity_choice" id="activity_choice">
+                {% for a in activities %}
+                <option value="{{ a['activity_name'] }}"
+                    {% if is_known and a['activity_name'] == entry['activity_name'] %}selected{% endif %}>
+                    {{ a['activity_name'] }}
+                </option>
+                {% endfor %}
+                <option value="__other__" {% if not is_known %}selected{% endif %}>
+                    Other (new activity)...
+                </option>
+            </select>
+        </label>
+        <div id="new_activity_row">
+            <label>New activity name
+                <input type="text" name="new_activity" id="new_activity"
+                       value="{{ '' if is_known else entry['activity_name'] }}">
+            </label>
+        </div>
+        <label>Start Time
+            <input type="datetime-local" name="start_time"
+                   value="{{ entry['start_time'][:16].replace(' ', 'T') }}" required>
+        </label>
+        <label>End Time
+            <input type="datetime-local" name="end_time"
+                   value="{{ entry['end_time'][:16].replace(' ', 'T') }}" required>
+        </label>
+        <label>Mood
+            <input type="number" name="mood" min="1" max="5"
+                   value="{{ entry['mood'] if entry['mood'] is not none else '' }}">
+        </label>
+        <label>Note
+            <textarea name="note">{{ entry['note'] or '' }}</textarea>
+        </label>
+        <input type="submit" value="Save changes">
     </form>
-    <p>
-        <a href = "/?day={{ entry['start_time'][:10] }}">Cancel</a>
-    </p>
+
+    <p><a href="/?day={{ entry['start_time'][:10] }}">Cancel</a></p>
+
+    <script>
+        const choice = document.getElementById('activity_choice');
+        const newRow = document.getElementById('new_activity_row');
+        const newInput = document.getElementById('new_activity');
+
+        function toggleNewActivity() {
+            const isOther = choice.value === '__other__';
+            newRow.style.display = isOther ? '' : 'none';
+            newInput.required = isOther;
+        }
+
+        choice.addEventListener('change', toggleNewActivity);
+        toggleNewActivity();
+    </script>
 </body>
 </html>

@@ -74,7 +74,7 @@ def edit_entry(entry_id):
     entry = db.get_entry(entry_id)
     if entry is None:
         return redirect(url_for('home'))
-    return render_template('edit.html', entry = entry)
+    return render_edit(entry)
 
 
 # This route handles the saving of changes made to an existing entry in the database.
@@ -84,7 +84,7 @@ def edit_entry(entry_id):
 
 @app.route('/update_entry/<int:entry_id>', methods = ['POST'])
 def save_changes(entry_id):
-    activity = request.form['activity']
+    activity = activity_from_form()
     start_time = request.form['start_time'].replace('T', ' ') + ':00' # Convert to datetime format
     end_time = request.form['end_time'].replace('T', ' ') + ':00' # Convert to datetime format
     mood = request.form.get('mood')
@@ -101,7 +101,7 @@ def save_changes(entry_id):
             'mood' : mood,
             'note' : note,
         }
-        return render_template('edit.html', entry = entry, errors = errors)
+        return render_edit(entry, errors)
     
     activity_id = db.get_or_create_activity(activity)
     db.update_entry(entry_id, activity_id, start_time, end_time, mood, note)
@@ -123,6 +123,26 @@ def validate_entry(activity, start_time, end_time, mood):
     if mood is not None and not 1 <= mood <= 5:
         errors.append("Mood should be a number from 1 to 5.")
     return errors
+
+
+# activity_from_form() is the same logic you already have at the top of save_entry. 
+# Once everything works, I can replace those lines in save_entry with activity = activity_from_form() to avoid repeating.
+
+def activity_from_form():
+    # works out the activity name from the dropdown and the "Other" box
+    choice = request.form.get('activity_choice','')
+    if choice == '__other__':
+        activity = request.form.get('new_activity','')
+    else:
+        activity = choice
+    return activity.strip()
+    
+# render_edit() builds the edit page in one place, so both routes below can reuse it.
+    
+def render_edit(entry, errors=None):
+    activities = db.get_activities()
+    names = [a['activity_name']for a in activities]
+    return render_template('edit.html', entry = entry, errors = errors or [], activities = activities, activity_names = names)
 
 
 
