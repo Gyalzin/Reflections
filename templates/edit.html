@@ -16,6 +16,7 @@ Last Modified: 2026-10-28
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Entry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Edit entry</h1>
@@ -30,7 +31,7 @@ Last Modified: 2026-10-28
 
 
     <form method = "POST" action = "/update_entry/{{ entry['entry_id'] }}">
-        <label>Activityn<input type = "text" name = "activity" value = "{{ entry['activity_name'] }}" required></label><br>
+        <label>Activity<input type = "text" name = "activity" value = "{{ entry['activity_name'] }}" required></label><br>
         <label>Start Time<input type = "datetime-local" name = "start_time" value = "{{ entry['start_time'] [:16].replace(' ', 'T') }}" required></label><br>
         <label>End Time<input type = "datetime-local" name = "end_time" value = "{{ entry['end_time'] [:16].replace(' ', 'T') }}" required></label><br>
         <label>Mood <input type="number" name="mood" min="1" max="5" value="{{ entry['mood'] if entry['mood'] is not none else '' }}"></label><br>

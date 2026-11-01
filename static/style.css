@@ -1,44 +1,307 @@
+/*
+ROOT VARIABLES
+Stores the main colours used throughout the application.
+Changing these values updates the overall colour scheme.
+*/
+:root {
+    --bg: #e9dfcc;
+    --paper: #f1eee7;
+    --ink: #3d3a35;
+    --muted: #9a9183;
+    --line: #e5ddd0;
+    --sage: #8fb5a0;
+    --sage-dark: #5b8470;
+    --clay: #b0704f;
+}
 
 /*
-.timeline is a tall box, and position: relative makes it the frame that everything inside is placed against. 
-.label and .block uses position: absolute, so its top and height percentages are measured against that frame. 
-The block colours are slightly see-through so overlapping entries stay visible.
+BODY
+Controls the overall page layout and appearance.
+max-width limits the content width.
+margin centres the page.
+padding creates space around the content.
+background and color control the page colours.
+font-family sets the main font.
+line-height controls spacing between lines.
+*/
+body {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.5;
+}
+
+/*
+MAIN HEADING
+Controls the appearance of the h1 heading.
+*/
+h1 {
+    margin-bottom: 0;
+    font-weight: normal;
+    letter-spacing: 0.04em;
+}
+
+/*
+PARAGRAPH AFTER MAIN HEADING
+Targets the paragraph immediately following h1.
+Reduces the top spacing and gives it a muted, italic appearance.
+*/
+h1 + p {
+    margin-top: 0.2rem;
+    color: var(--muted);
+    font-style: italic;
+}
+
+/*
+SECONDARY HEADING
+Controls spacing and font weight for h2 headings.
+*/
+h2 {
+    margin: 1.5rem 0 0.4rem;
+    font-weight: normal;
+}
+
+/*
+TERTIARY HEADING
+Adds spacing above h3 headings and changes their colour.
+*/
+h3 {
+    margin-top: 2rem;
+    font-weight: normal;
+    color: var(--muted);
+}
+
+/*
+LINKS
+Sets the default colour for hyperlinks.
+*/
+a {
+    color: var(--sage-dark);
+}
+
+/*
+DAY NAVIGATION
+Adds spacing between navigation links and removes underlines.
+*/
+.day-nav a {
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+/*
+DAY NAVIGATION HOVER
+Adds an underline when the user hovers over a navigation link.
+*/
+.day-nav a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- TIMELINE ---------- */
+
+/*
+TIMELINE CONTAINER
+Creates the main 24-hour timeline.
+position: relative makes this the reference frame for positioned elements inside it.
+height: 1920px represents 24 hours at 80px per hour.
+background, border and border-radius control its appearance.
 */
 .timeline {
     position: relative;
     height: 1920px;
-    margin: 1 rem 0 2rem;
-    background: #faf7f2;
-    border-left: 2px solid #d8d2c8;
+    margin: 1rem 0 2rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
 }
 
+/*
+TIMELINE LABELS
+Positions time-of-day labels and horizontal divider lines.
+position: absolute allows labels to be placed at specific positions.
+left and right stretch the labels across the timeline.
+*/
 .label {
     position: absolute;
     left: 0;
     right: 0;
-    padding-left: 0.5rem;
-    border-top: 1px dashed #e3ddd2;
-    color: #b5ab0a;
+    padding-left: 0.8rem;
+    border-top: 1px dashed var(--line);
+    color: var(--muted);
     font-size: 0.8rem;
+    font-style: italic;
 }
 
+/*
+ACTIVITY BLOCKS
+Controls the appearance and positioning of activities on the timeline.
+position: absolute allows each activity to be positioned using top and height values.
+box-sizing includes padding and borders within the element's dimensions.
+overflow: hidden prevents content from spilling outside the block.
+background and border control the block's appearance.
+*/
 .block {
-    position:absolute;
+    position: absolute;
     box-sizing: border-box;
-    padding: 2px 8px;
+    padding: 4px 10px;
     overflow: hidden;
-    background: rgba(150,190,170,0.75);
-    border: 1px solid rgba(90,130,110,0.6);
-    border-radius: 8px;
-    color: #2f3b34;
+    background: rgba(143, 181, 160, 0.78);
+    border: 1px solid rgba(91, 132, 112, 0.55);
+    border-radius: 10px;
+    color: #27352d;
     font-size: 0.85rem;
     text-decoration: none;
 }
 
-.block.hover {
-    background: rgba(150,190,170,0.95);
+/*
+ACTIVITY BLOCK HOVER
+Makes the activity block's background more opaque when hovered over.
+*/
+.block:hover {
+    background: rgba(143, 181, 160, 0.98);
 }
 
+/* ---------- LIST OF ENTRIES ---------- */
+
+/*
+UNORDERED LIST
+Controls the indentation of activity lists.
+*/
+ul {
+    padding-left: 1.2rem;
+}
+
+/*
+LIST ITEMS
+Adds vertical spacing between individual list entries.
+*/
+li {
+    margin-bottom: 0.6rem;
+}
+
+/*
+ERROR MESSAGES
+Styles validation errors displayed to the user.
+Uses a light background, coloured left border and darker text.
+*/
 .errors {
-    color: #a0522d;
+    padding: 0.6rem 1rem;
+    list-style: none;
+    background: #f7e9e1;
+    border-left: 4px solid var(--clay);
+    border-radius: 8px;
+    color: #7a4128;
+}
+
+/* ---------- FORMS ---------- */
+
+/*
+FORM LINE BREAKS
+Hides br elements inside forms to control spacing through CSS instead.
+*/
+form br {
+    display: none;
+}
+
+/*
+FORM LABELS
+Displays labels on separate lines and adds spacing below them.
+*/
+form label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/*
+FORM INPUTS
+Controls the appearance of text, number, date/time, dropdown and textarea fields.
+width: 100% makes fields fill their available container width.
+box-sizing prevents padding and borders from increasing their total width.
+*/
+form input[type="text"],
+form input[type="number"],
+form input[type="datetime-local"],
+form select,
+form textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.6rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    font: inherit;
+}
+
+/*
+TEXTAREA
+Sets the minimum height of larger text input fields.
+*/
+form textarea {
+    min-height: 5rem;
+}
+
+/*
+FORM INPUT FOCUS
+Changes the border colour when the user selects an input field.
+Removes the browser's default outline.
+*/
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--sage);
+}
+
+/*
+BUTTONS
+Styles standard buttons and submit buttons.
+Controls padding, background colour, rounded shape and text appearance.
+cursor: pointer displays a hand when hovering over buttons.
+*/
+button,
+input[type="submit"] {
+    padding: 0.5rem 1.2rem;
+    background: var(--sage);
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+/*
+BUTTON HOVER
+Changes the button background when the user hovers over it.
+*/
+button:hover,
+input[type="submit"]:hover {
+    background: var(--sage-dark);
+}
+
+/*
+LIST DELETE BUTTONS
+Targets buttons inside forms that are located within list items.
+Overrides the standard button styling to create smaller, subtler buttons.
+*/
+li form button {
+    padding: 0.1rem 0.7rem;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--clay);
+    font-size: 0.8rem;
+}
+
+/*
+LIST DELETE BUTTON HOVER
+Adds a light background when hovering over list buttons.
+*/
+li form button:hover {
+    background: #f7e9e1;
 }
