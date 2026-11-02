@@ -30,6 +30,14 @@ Last Modified: 2026-10-31
         <a href="/?day={{next_day}}">Next day &rarr;</a>
     </p>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <p class = "notice" id = "notice">{{messages[0]}}</p>
+    <script>setTimeout(() => document.getElementById('notice').style.display = 'none', 3000);</script>
+    {% endif%}
+    {% endwith %}
+
+
     <div class="timeline">
         <div class="label" style="top: 0%;">Midnight</div>
         <div class="label" style="top: 25%;">Morning</div>
@@ -46,6 +54,9 @@ Last Modified: 2026-10-31
             {{ e["start_time"][11:16] }} to {{ e["end_time"][11:16] }}
         </a>
         {% endfor %}
+        {% if not entries %}
+        <p class = " empty"> Nothing recorded for this day, and that's perfectly okay!</p>
+        {% endif %}
     </div>
 
     <h3>Entries</h3>

@@ -5,12 +5,12 @@
 # Last Modified: 2026-10-31
 # Created by: Gyalzin Dorji
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date, timedelta
 import db
 
 app = Flask(__name__)
-
+app.secret_key = 'any-long-random-text'  # Set a secret key for session management
 # This route handles the home page of the application.
 # It retrieves the day from the query parameters or defaults to today's date. 
 
@@ -26,6 +26,7 @@ def home():
 # If validation passes, it gets or creates the activity in the database, saves the entry, and redirects the user to that day's timeline.
 # If someone picks an existing activity, its name goes straight through, and get_or_create_activity finds it. 
 # If they pick “Other”, the typed name is used, and a brand-new activity is created under General. Your validation still catches an empty name.
+# This route ensures that the user receives feedback after saving an entry, using the flash message mechanism provided by Flask.
 
 @app.route('/save_entry', methods = ['POST'])
 def save_entry():
@@ -51,23 +52,27 @@ def save_entry():
     
     activity_id = db.get_or_create_activity(activity)
     db.add_entry(activity_id, start_time, end_time, mood, note)
+    flash('Saved.')
     return redirect(url_for('home', day = start_time[:10]))
 
 
 # This route handles the deletion of an entry from the database.
 # It takes the entry_id as a parameter from the URL and calls the delete_entry function from the db module to remove the entry from the database. 
 # After deleting the entry, it redirects the user back to the home page, preserving the current day in the query parameters.
+# It also flashes a message to inform the user that the entry has been deleted.
 
 @app.route('/delete_entry/<int:entry_id>', methods = ['POST'])
 def remove_entry(entry_id):
     db.delete_entry(entry_id)
     day = request.form.get('day', date.today().isoformat())
+    flash(' Entry deleted.')
     return redirect(url_for('home',day = day))
 
 
 # This route handles the editing of an entry in the database.
 # It takes the entry_id as a parameter from the URL and retrieves the corresponding entry from the database using the get_entry function from the db module. 
 # If the entry does not exist, it redirects the user back to the home page. Otherwise, it renders the 'edit.html' template with the retrieved entry data, allowing the user to edit the entry.
+# It also flashes a message to inform the user that the entry is being edited.
 
 @app.route('/edit_entry/<int:entry_id>')
 def edit_entry(entry_id):
@@ -80,7 +85,8 @@ def edit_entry(entry_id):
 # This route handles the saving of changes made to an existing entry in the database.
 # It takes the entry_id as a parameter from the URL and retrieves the updated form data from the request object. 
 # It processes the form data, updates the corresponding entry in the database using the update_entry function from the db module.
-# It also checks for errors
+# It also checks for errors in the form data and re-renders the edit page with the errors if any are found.
+# It also flashes a message to inform the user that the changes have been saved.
 
 @app.route('/update_entry/<int:entry_id>', methods = ['POST'])
 def save_changes(entry_id):
@@ -99,12 +105,13 @@ def save_changes(entry_id):
             'start_time' : start_time,
             'end_time' : end_time,
             'mood' : mood,
-            'note' : note,
+            'note' : note
         }
         return render_edit(entry, errors)
     
     activity_id = db.get_or_create_activity(activity)
     db.update_entry(entry_id, activity_id, start_time, end_time, mood, note)
+    flash('Changes saved.')
     return redirect(url_for ('home', day = start_time[:10])) # Redirect to the home page with the day of the updated entry. It extracts the date part from the start_time string (first 10 characters) to use as the day parameter in the redirect URL.
 
 

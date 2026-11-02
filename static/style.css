@@ -305,3 +305,26 @@ Adds a light background when hovering over list buttons.
 li form button:hover {
     background: #f7e9e1;
 }
+
+/*
+NOTICE
+Styles the notice message that appears at the top of the page.
+*/
+
+.notice {
+    padding: 0.4rem 1 rem;
+    background: #e6f0ea;
+    border-left: 4px solid var(--sage);
+    border-radius: 8px;
+    color: var(--sage-dark);
+}
+
+/*
+EMPTY
+Styles the message that appears when there are no entries for a given day.
+*/
+.empty {
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+}
