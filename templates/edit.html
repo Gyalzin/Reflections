@@ -52,11 +52,11 @@ Last Modified: 2026-10-28
             </label>
         </div>
         <label>Start Time
-            <input type="datetime-local" name="start_time"
+            <input type="datetime-local" name="start_time" step = "300"
                    value="{{ entry['start_time'][:16].replace(' ', 'T') }}" required>
         </label>
         <label>End Time
-            <input type="datetime-local" name="end_time"
+            <input type="datetime-local" name="end_time" step = "300"
                    value="{{ entry['end_time'][:16].replace(' ', 'T') }}" required>
         </label>
         <label>Mood

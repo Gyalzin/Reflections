@@ -6,7 +6,7 @@
 # Created by: Gyalzin Dorji
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import db
 
 app = Flask(__name__)
@@ -205,18 +205,30 @@ def layout_entries(rows):
         e['lanes'] = lanes_in_group[e['group']]
     return entries
             
+# This function provides default start and end times for a given day, ensuring that the start time is not later than 22:00 for today and 9:00 for other days.
+# Returns a tuple containing the default start and end times as strings in the format 'YYYY-MM-DDTHH:MM'.
+# The end time is always one hour after the start time.
+            
+def default_times(day):
+    # today starts at the current hour (no later than 22:00); other days start at 9:00
+    hour = min(datetime.now().hour, 22) if day == date.today().isoformat() else 9
+    start = datetime.fromisoformat(day).replace(hour=hour)
+    end = start + timedelta(hours = 1)
+    return start.strftime('%Y-%m-%dT%H:%M'), end.strftime('%Y-%m-%dT%H:%M')
     
-# This function prepares everything needed to display a particular day's activity timeline.
-# It converts the date string into a date object, calculates the previous and next days, retrieves the day's activities from the database, and passes all this information to index.html using render_template(). 
-# The errors and form parameters are optional, allowing the page to display validation errors and preserve previously entered form data when needed.
-# Prepares and displays a day's timeline by retrieving entries from the database and calculating their position and height as percentages of a 24-hour timeline. 
-# It also determines the previous and next dates and passes the data, errors, and form values to the HTML template for rendering.
+# This function renders the HTML for a specific day's timeline, including the previous and next day navigation, the list of entries, and the form for adding a new entry.
+# It takes the day as a string in the format 'YYYY-MM-DD', optional errors, and an optional form dictionary.
+# Returns the rendered HTML for the specified day.
+# If no form is provided, it generates default start and end times for the day.
 
 def render_day(day, errors = None, form = None):
     current = date.fromisoformat(day)
     prev_day = (current - timedelta(days=1)).isoformat()
     next_day = (current + timedelta(days=1)).isoformat()
     entries = layout_entries(db.get_entries(day))
+    if not form:
+        start, end = default_times(day)
+        form = {'start_time': start, 'end_time': end}
     
     return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities())
 
