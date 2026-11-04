@@ -28,6 +28,8 @@ Last Modified: 2026-10-31
         <a href="/?day={{prev_day}}">&larr; Previous day</a>
         <a href="/">Today</a>
         <a href="/?day={{next_day}}">Next day &rarr;</a>
+        <a href="#entry-form" class="add-entry-btn">Add Entry</a>
+
     </p>
 
     {% with messages = get_flashed_messages() %}
@@ -83,7 +85,7 @@ Last Modified: 2026-10-31
     </ul>
     {% endif %}
 
-    <form method="POST" action="/save_entry">
+    <form method="POST" action="/save_entry" id="entry-form">
         <label>Activity
             <select name="activity_choice" id="activity_choice">
                 {% for a in activities %}

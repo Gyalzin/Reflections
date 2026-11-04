@@ -14,6 +14,10 @@ Changing these values updates the overall colour scheme.
     --clay: #b0704f;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /*
 BODY
 Controls the overall page layout and appearance.
@@ -82,6 +86,11 @@ a {
     color: var(--sage-dark);
 }
 
+.day-nav {
+    display:flex;
+    align-items: center;
+}
+
 /*
 DAY NAVIGATION
 Adds spacing between navigation links and removes underlines.
@@ -97,6 +106,10 @@ Adds an underline when the user hovers over a navigation link.
 */
 .day-nav a:hover {
     text-decoration: underline;
+}
+
+.day-nav .add-entry-btn {
+    margin-left: auto;
 }
 
 /* ---------- TIMELINE ---------- */
@@ -261,12 +274,12 @@ form textarea:focus {
 
 /*
 BUTTONS
-Styles standard buttons and submit buttons.
-Controls padding, background colour, rounded shape and text appearance.
-cursor: pointer displays a hand when hovering over buttons.
+Styles standard buttons, submit buttons and the Add Entry link.
+All buttons and the Add Entry link share the same base styling.
 */
 button,
-input[type="submit"] {
+input[type="submit"],
+.add-entry-btn {
     padding: 0.5rem 1.2rem;
     background: var(--sage);
     border: none;
@@ -274,15 +287,18 @@ input[type="submit"] {
     color: #fff;
     font: inherit;
     cursor: pointer;
+    text-decoration: none;
 }
 
 /*
 BUTTON HOVER
-Changes the button background when the user hovers over it.
+Changes the button background when the user hovers.
 */
 button:hover,
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+.add-entry-btn:hover {
     background: var(--sage-dark);
+    text-decoration: none !important;
 }
 
 /*
