@@ -112,6 +112,10 @@ Last Modified: 2026-10-31
         <input type="submit" value="Add Entry">
     </form>
 
+    <!-- JavaScript to toggle the visibility of the new activity input field based on the selected activity choice. 
+     It adds an event listener to the activity choice dropdown and shows or hides the new activity input field accordingly.
+     -->
+
     <script>
         const choice = document.getElementById('activity_choice');
         const newRow = document.getElementById('new_activity_row');
@@ -125,6 +129,20 @@ Last Modified: 2026-10-31
 
         choice.addEventListener('change', toggleNewActivity);
         toggleNewActivity();
+    </script>
+
+    <!-- Scroll to the appropriate position on the timeline when the page loads, unless there's a hash in the URL or a notice or errors are present. 
+     It calculates the target scroll position based on the scroll_to variable passed from the backend, which is determined by the current time or the first entry of the day.
+     -->
+    <script>
+        const dayTimeline = document.querySelector('.timeline');
+        const justSaved = document.getElementById('notice');
+        const hasErrors = document.querySelector('.errors');
+
+        if (!window.location.hash && !justSaved && !hasErrors) {
+            const target = dayTimeline.offsetTop + dayTimeline.offsetHeight * {{ scroll_to }} /100;
+            window.scrollTo({ top: target - 120, behavior: 'smooth' });
+        }
     </script>
 
 </body>

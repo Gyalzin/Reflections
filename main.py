@@ -219,6 +219,7 @@ def default_times(day):
 # This function renders the HTML for a specific day's timeline, including the previous and next day navigation, the list of entries, and the form for adding a new entry.
 # It takes the day as a string in the format 'YYYY-MM-DD', optional errors, and an optional form dictionary.
 # Returns the rendered HTML for the specified day.
+# If the day is today, it calculates the scroll position based on the current time; if there are entries, it scrolls to the first entry; otherwise, it defaults to 8:00.
 # If no form is provided, it generates default start and end times for the day.
 
 def render_day(day, errors = None, form = None):
@@ -226,11 +227,20 @@ def render_day(day, errors = None, form = None):
     prev_day = (current - timedelta(days=1)).isoformat()
     next_day = (current + timedelta(days=1)).isoformat()
     entries = layout_entries(db.get_entries(day))
+    
+    if day == date.today().isoformat():
+        now = datetime.now()
+        scroll_to =  (now.hour * 60 + now.minute) / 1440 * 100
+    elif entries:
+        scroll_to = entries[0] ['top'] # scroll to the first entry of the day if thre are entries
+    else:
+        scroll_to = 8 * 60 / 1440 *100 # 8:00 on empty days
+        
     if not form:
         start, end = default_times(day)
         form = {'start_time': start, 'end_time': end}
     
-    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities())
+    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities(), scroll_to = scroll_to)
 
 
 
