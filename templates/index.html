@@ -23,14 +23,16 @@ Last Modified: 2026-10-31
 
     <h1>Reflections</h1>
     <p>Welcome to Reflections!</p>
-    <h2> {{day}} </h2>
-    <p class = "day-nav">
-        <a href="/?day={{prev_day}}">&larr; Previous day</a>
-        <a href="/">Today</a>
-        <a href="/?day={{next_day}}">Next day &rarr;</a>
-        <a href="#entry-form" class="add-entry-btn">Add Entry</a>
 
-    </p>
+    <div class = "day-bar">
+        <h2> {{day}} </h2>
+        <p class = "day-nav">
+            <a href="/?day={{prev_day}}">&larr; Previous day</a>
+            <a href="/">Today</a>
+            <a href="/?day={{next_day}}">Next day &rarr;</a>
+            <a href="#entry-form" class="add-entry-btn">Add Entry</a>
+        </p>
+    </div>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -141,7 +143,8 @@ Last Modified: 2026-10-31
 
         if (!window.location.hash && !justSaved && !hasErrors) {
             const target = dayTimeline.offsetTop + dayTimeline.offsetHeight * {{ scroll_to }} /100;
-            window.scrollTo({ top: target - 120, behavior: 'smooth' });
+            const offset = document.querySelector('.day-bar').offsetHeight + 60;
+            window.scrollTo({ top: target - offset, behavior: 'smooth' });
         }
     </script>
 

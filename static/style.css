@@ -16,6 +16,7 @@ Changing these values updates the overall colour scheme.
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* Ensures that when navigating to an anchor, the content is not hidden behind a fixed header. */
 }
 
 /*
@@ -76,6 +77,31 @@ h3 {
     margin-top: 2rem;
     font-weight: normal;
     color: var(--muted);
+}
+
+/* This section styles the day navigation bar, which includes the date and navigation links. */
+
+.day-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.3rem 1 rem;
+    padding: 0.5rem 0.2rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+}
+
+.day-bar h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.day-bar .day-nav {
+    margin: 0;
 }
 
 /*
