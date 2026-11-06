@@ -228,9 +228,11 @@ def render_day(day, errors = None, form = None):
     next_day = (current + timedelta(days=1)).isoformat()
     entries = layout_entries(db.get_entries(day))
     
+    now_top = None  # Initialize now_top to None
     if day == date.today().isoformat():
         now = datetime.now()
-        scroll_to =  (now.hour * 60 + now.minute) / 1440 * 100
+        now_top = (now.hour * 60 + now.minute) / 1440 *100
+        scroll_to = now_top
     elif entries:
         scroll_to = entries[0] ['top'] # scroll to the first entry of the day if thre are entries
     else:
@@ -240,7 +242,7 @@ def render_day(day, errors = None, form = None):
         start, end = default_times(day)
         form = {'start_time': start, 'end_time': end}
     
-    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities(), scroll_to = scroll_to)
+    return render_template('index.html', entries = entries, day = day, prev_day = prev_day, next_day = next_day, errors = errors or [], form = form or {}, activities = db.get_activities(), scroll_to = scroll_to, now_top = now_top)
 
 
 

@@ -63,6 +63,10 @@ Last Modified: 2026-10-31
         {% if not entries %}
         <p class = " empty"> Nothing recorded for this day, and that's perfectly okay!</p>
         {% endif %}
+
+        {% if now_top is not none %}
+        <div class = "now-line" style = "top : {{ now_top}}%;"><span>now</span></div>
+        {% endif %}
     </div>
 
     <h3>Entries</h3>
