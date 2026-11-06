@@ -14,11 +14,6 @@ Changing these values updates the overall colour scheme.
     --clay: #b0704f;
 }
 
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem; /* Ensures that when navigating to an anchor, the content is not hidden behind a fixed header. */
-}
-
 /*
 BODY
 Controls the overall page layout and appearance.
@@ -325,6 +320,7 @@ input[type="submit"]:hover,
 .add-entry-btn:hover {
     background: var(--sage-dark);
     text-decoration: none !important;
+
 }
 
 /*
@@ -397,3 +393,4 @@ Styles the line that indicates the current time on the timeline.
     font-size: 0.75rem;
     font-style: italic;
 }
+

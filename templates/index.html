@@ -21,10 +21,12 @@ Last Modified: 2026-10-31
 
 <body>
 
-    <h1>Reflections</h1>
+     <h1>Reflections</h1>
     <p>Welcome to Reflections!</p>
 
+
     <div class = "day-bar">
+    
         <h2> {{day_label}} </h2>
         <p class = "day-nav">
             <a href="/?day={{prev_day}}">&larr; Previous day</a>
@@ -137,20 +139,25 @@ Last Modified: 2026-10-31
         toggleNewActivity();
     </script>
 
-    <!-- Scroll to the appropriate position on the timeline when the page loads, unless there's a hash in the URL or a notice or errors are present. 
-     It calculates the target scroll position based on the scroll_to variable passed from the backend, which is determined by the current time or the first entry of the day.
+    <!-- JavaScript to automatically scroll the page to a specific position based on the current time or the first entry of the day.
+        It calculates the target scroll position and adjusts it based on whether the current day is today or not, ensuring that the relevant content is visible to the user upon page load.
+        It also checks for the presence of a notice or errors to avoid scrolling when they are displayed.
      -->
     <script>
-        const dayTimeline = document.querySelector('.timeline');
-        const justSaved = document.getElementById('notice');
-        const hasErrors = document.querySelector('.errors');
+    const dayTimeline = document.querySelector('.timeline');
+    const justSaved = document.getElementById('notice');
+    const hasErrors = document.querySelector('.errors');
+    const isToday = {{ 'true' if now_top is not none else 'false' }};
 
-        if (!window.location.hash && !justSaved && !hasErrors) {
-            const target = dayTimeline.offsetTop + dayTimeline.offsetHeight * {{ scroll_to }} /100;
-            const offset = document.querySelector('.day-bar').offsetHeight + 60;
-            window.scrollTo({ top: target - offset, behavior: 'smooth' });
-        }
-    </script>
+    if (!window.location.hash && !justSaved && !hasErrors) {
+        const target = dayTimeline.offsetTop + dayTimeline.offsetHeight * {{ scroll_to }} / 100;
+        const barHeight = document.querySelector('.day-bar').offsetHeight;
+        const offset = isToday
+            ? (barHeight + window.innerHeight) / 2     // middle of the visible area
+            : barHeight + 60;                          // just below the bar
+        window.scrollTo({ top: target - offset, behavior: 'auto' });
+    }
+</script>
 
 </body>
 </html>
