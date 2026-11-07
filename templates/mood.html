@@ -1,0 +1,15 @@
+{% macro mood_picker(current) %}
+<fieldset class="mood-picker">
+    <legend>Mood</legend>
+    {% for value, face, name in [(1, '😞', 'Low'), (2, '🙁', 'Meh'), (3, '😐', 'Okay'), (4, '🙂', 'Good'), (5, '😄', 'Great')] %}
+    <label title="{{ name }}">
+        <input type="radio" name="mood" value="{{ value }}" {% if current == value|string %}checked{% endif %}>
+        <span>{{ face }}</span>
+    </label>
+    {% endfor %}
+    <label class="mood-none" title="No mood">
+        <input type="radio" name="mood" value="" {% if current == '' %}checked{% endif %}>
+        <span>skip</span>
+    </label>
+</fieldset>
+{% endmacro %}

@@ -10,6 +10,7 @@ Date Created: 2026-10-28
 Last Modified: 2026-10-28
 -->
 
+{% from 'mood.html' import mood_picker %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,10 +60,7 @@ Last Modified: 2026-10-28
             <input type="datetime-local" name="end_time" step = "300"
                    value="{{ entry['end_time'][:16].replace(' ', 'T') }}" required>
         </label>
-        <label>Mood
-            <input type="number" name="mood" min="1" max="5"
-                   value="{{ entry['mood'] if entry['mood'] is not none else '' }}">
-        </label>
+        {{ mood_picker(entry['mood']|string if entry['mood'] is not none else '') }}
         <label>Note
             <textarea name="note">{{ entry['note'] or '' }}</textarea>
         </label>

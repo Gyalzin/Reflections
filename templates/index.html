@@ -10,6 +10,7 @@ Created by: Gyalzin Dorji
 Date Created: 2026-10-24
 Last Modified: 2026-10-31
 -->
+{% from 'mood.html' import mood_picker %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,7 +116,7 @@ Last Modified: 2026-10-31
         </div>
         <label>Start Time <input type="datetime-local" name="start_time" step = "300" value="{{ form.get('start_time', '') }}" required></label><br>
         <label>End Time <input type="datetime-local" name="end_time" step = "300" value="{{ form.get('end_time', '') }}" required></label><br>
-        <label>Mood <input type="number" name="mood" min="1" max="5" value="{{ form.get('mood', '') }}"></label><br>
+        {{ mood_picker (form.get('mood', '')|string)}}
         <label>Note <textarea name="note">{{ form.get('note', '') }}</textarea></label><br>
         <input type="submit" value="Add Entry">
     </form>
