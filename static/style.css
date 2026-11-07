@@ -324,27 +324,6 @@ input[type="submit"]:hover,
 }
 
 /*
-LIST DELETE BUTTONS
-Targets buttons inside forms that are located within list items.
-Overrides the standard button styling to create smaller, subtler buttons.
-*/
-li form button {
-    padding: 0.1rem 0.7rem;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--clay);
-    font-size: 0.8rem;
-}
-
-/*
-LIST DELETE BUTTON HOVER
-Adds a light background when hovering over list buttons.
-*/
-li form button:hover {
-    background: #f7e9e1;
-}
-
-/*
 NOTICE
 Styles the notice message that appears at the top of the page.
 */
@@ -463,4 +442,25 @@ It provides a visual and interactive way for users to select their mood using em
     font-size: 0.85rem;
     font-style: italic;
     filter: none;
+}
+
+/*
+DELETE FORM
+Styles the delete form for entries, including the form container and the delete button.
+*/
+
+.delete-form {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.delete-form button {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--clay);
+}
+
+.delete-form button:hover {
+    background: #f7e9e1;
 }

@@ -69,6 +69,12 @@ Last Modified: 2026-10-28
 
     <p><a href="/?day={{ entry['start_time'][:10] }}">Cancel</a></p>
 
+    <form class="delete-form" method="POST" action="/delete_entry/{{ entry['entry_id'] }}"
+      onsubmit="return confirm('Delete this entry? This cannot be undone.');">
+        <input type="hidden" name="day" value="{{ entry['start_time'][:10] }}">
+        <button type="submit">Delete</button>
+    </form>
+
     <script>
         const choice = document.getElementById('activity_choice');
         const newRow = document.getElementById('new_activity_row');
