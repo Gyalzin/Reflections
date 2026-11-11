@@ -76,11 +76,6 @@ Last Modified: 2026-10-31
     <ul>
         {% for e in entries %}
         <li>{{ e["activity_name"] }}: {{ e["start_time"] }} to {{ e["end_time"] }} {{ e["note"] or "" }}
-            <form method="POST" action="/delete_entry/{{e['entry_id']}}" style="display:inline"
-                onsubmit="return confirm('Delete this entry?');">
-                <input type="hidden" name="day" value="{{day}}">
-                <button type="submit">Delete</button>
-            </form>
             <a href="/edit_entry/{{e['entry_id']}}">Edit</a>
         </li>
         {% endfor %}
