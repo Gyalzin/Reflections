@@ -158,6 +158,23 @@ def minutes_since_midnight(timestamp):
     return int(timestamp[11:13]) * 60 + int(timestamp[14:16])
 
 
+# MOOD FACES
+MOOD_FACES = {
+    1: "😢",
+    2: "😕",
+    3: "😐",
+    4: "🙂",
+    5: "😄"
+}
+# This function converts a timestamp into a human-readable clock label in 'HH:MM AM/PM' format.
+# Example: "14:30" becomes "2:30 PM"
+def clock_label (timestamp):
+    # 'HH:MM' format
+    hour = int(timestamp[11:13])
+    minute = timestamp[14:16]
+    suffix= 'am' if hour < 12 else 'pm'
+    return f"{hour % 12 or 12}: {minute} {suffix}"
+
 # This function makes overlapping entries sit side by side, so none of them hides another.
 # Organises activity entries for display on a 24-hour timeline.
 # Calculates each activity's position and height based on its start and end times.
@@ -174,6 +191,8 @@ def layout_entries(rows):
         entry['end_min'] = end
         entry['top'] = start / 1440 * 100
         entry['height'] = (end - start) / 1440 * 100
+        entry['time_label'] = clock_label(entry['start_time'])
+        entry['mood_face'] = MOOD_FACES.get(entry['mood'], '')
         entries.append(entry)
         
     # give each entry a lane, grouping entries that overlap    

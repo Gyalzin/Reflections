@@ -18,6 +18,12 @@ html {
     scroll-padding-top: 5rem;      /* keeps jump links from hiding under the bar */
 }
 
+
+/*
+SMOOTH SCROLLING
+Enables smooth scrolling for the entire page when the user prefers it.
+*/
+
 @media (prefers-reduced-motion: no-preference) {
     html {
         scroll-behavior: smooth;
@@ -473,4 +479,22 @@ Styles the delete form for entries, including the form container and the delete 
 
 .delete-form button:hover {
     background: #f7e9e1;
+}
+
+
+
+ /*
+JOURNAL SECTION
+Styles the journal entries and aligns titles and notes horizontally.
+*/
+
+.journal article {
+    margin-bottom: 1rem;
+    padding-left: 0.9rem;
+    border-left: 3px solid var(--line);
+}
+
+.journal p {
+    margin: 0;
+    white-space: pre-line;
 }
