@@ -151,7 +151,7 @@ Last Modified: 2026-10-31
         const offset = isToday
             ? (barHeight + window.innerHeight) / 2     // middle of the visible area
             : barHeight + 60;                          // just below the bar
-        window.scrollTo({ top: target - offset, behavior: 'auto' });
+        window.scrollTo({ top: target - offset, behavior: 'instant' });
     }
 </script>
 

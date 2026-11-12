@@ -14,6 +14,16 @@ Changing these values updates the overall colour scheme.
     --clay: #b0704f;
 }
 
+html {
+    scroll-padding-top: 5rem;      /* keeps jump links from hiding under the bar */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 /*
 BODY
 Controls the overall page layout and appearance.
