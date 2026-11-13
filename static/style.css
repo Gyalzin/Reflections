@@ -460,29 +460,6 @@ It provides a visual and interactive way for users to select their mood using em
     filter: none;
 }
 
-/*
-DELETE FORM
-Styles the delete form for entries, including the form container and the delete button.
-*/
-
-.delete-form {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-}
-
-.delete-form button {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--clay);
-}
-
-.delete-form button:hover {
-    background: #f7e9e1;
-}
-
-
-
  /*
 JOURNAL SECTION
 Styles the journal entries and aligns titles and notes horizontally.
@@ -497,4 +474,36 @@ Styles the journal entries and aligns titles and notes horizontally.
 .journal p {
     margin: 0;
     white-space: pre-line;
+}
+
+/*
+FORM ACTIONS
+Styles the form action buttons, including Save, Cancel, and Delete buttons.
+*/
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 1.2rem;
+    margin-top: 1.2rem;
+}
+
+.form-actions .cancel {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.form-actions .cancel:hover {
+    text-decoration: underline;
+}
+
+.form-actions .danger {
+    margin-left: auto;            /* pushes Delete to the far right */
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--clay);
+}
+
+.form-actions .danger:hover {
+    background: #f7e9e1;
 }
