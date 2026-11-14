@@ -11,12 +11,19 @@ import db
 
 app = Flask(__name__)
 app.secret_key = 'any-long-random-text'  # Set a secret key for session management
+
+
 # This route handles the home page of the application.
 # It retrieves the day from the query parameters or defaults to today's date. 
+# It validates the date format and ensures that the day is in ISO format (YYYY-MM-DD).
 
 @app.route('/')
 def home():
-    day = request.args.get('day', date.today().isoformat())  # Get the day from query parameters or use today's date
+    day = request.args.get('day', '')
+    try:
+        date.fromisoformat(day)
+    except ValueError:
+        day = date.today().isoformat()
     return render_day(day)
 
 
