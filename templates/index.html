@@ -27,15 +27,14 @@ Last Modified: 2026-10-31
     <p class="tagline">Welcome to Reflections!</p>
     </header>
 
-    <div class = "day-bar">
-    
-        <h2> {{day_label}} </h2>
-        <p class = "day-nav">
-            <a href="/?day={{prev_day}}">&larr; Previous day</a>
-            <a href="/">Today</a>
-            <a href="/?day={{next_day}}">Next day &rarr;</a>
-            <a href="#entry-form" class="add-entry-btn">Add Entry</a>
-        </p>
+    <div class="day-bar">
+        <h2>{{ day_label }}</h2>
+        <nav class="day-nav">
+            <a class="pill" href="/?day={{ prev_day }}" aria-label="Previous day">&larr;<span class="pill-text"> Previous Day</span></a>
+            <a class="pill {% if now_top is not none %}current{% endif %}" href="/">Today</a>
+            <a class="pill" href="/?day={{ next_day }}" aria-label="Next day"><span class="pill-text">Next Day </span>&rarr;</a>
+        </nav>
+        <a class="pill pill-add" href="#entry-form">Add entry</a>
     </div>
 
     {% with messages = get_flashed_messages() %}

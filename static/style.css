@@ -12,6 +12,8 @@ Changing these values updates the overall colour scheme.
     --sage: #8fb5a0;
     --sage-dark: #5b8470;
     --clay: #b0704f;
+    --dark: rgba(0, 0, 0, 0.3);
+    
 }
 
 html {
@@ -113,7 +115,7 @@ h3 {
     gap: 0.3rem 1 rem;
     padding: 0.5rem 0.2rem;
     background: var(--bg);
-    border-bottom: 1px solid var(--line);
+
 }
 
 .day-bar h2 {
@@ -142,23 +144,132 @@ a {
 DAY NAVIGATION
 Adds spacing between navigation links and removes underlines.
 */
-.day-nav a {
-    margin-right: 1rem;
+
+.day-bar .day-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+}
+
+.pill {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--sage-dark);
+    font-size: 0.85rem;
     text-decoration: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: background 0.2s ease, border-color 0.2s ease,
+                box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+
+.pill:focus-visible {
+    outline: 2px solid var(--sage-dark);
+    outline-offset: 2px;
+}
+
+
+
+.pill-add {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: #fff;
+}
+
+@media (hover: hover) {
+    .pill:hover {
+        border-color: var(--sage-dark);
+        transform: scale(1.04);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .pill-add:hover {
+        background: var(--sage-dark);
+        border-color: var(--sage-dark);
+    }
+}
+
+.pill:active {
+    transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pill { transition: none; }
+    .pill:hover, .pill:active { transform: none; }
+}
+
+/* keep the heading on the left and the pills together on the right */
+.day-bar {
+    justify-content: flex-start;
+    gap: 0.5rem 0.6rem;
+}
+
+.day-bar h2 {
+    margin-right: auto;
 }
 
 /*
-DAY NAVIGATION HOVER
-Adds an underline when the user hovers over a navigation link.
+RESPONSIVE DAY BAR
+Adjusts the layout of the day bar for smaller screens.
 */
-.day-nav a:hover {
-    text-decoration: underline;
-}
 
-.day-nav .add-entry-btn {
-    margin-left: auto;
-}
+@media (max-width: 520px) {
+    html {
+        scroll-padding-top: 8rem;          /* the bar is taller on phones */
+    }
 
+    .day-bar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 0.6rem 0.8rem;
+    }
+
+    .day-bar h2 {
+        grid-row: 1;
+        grid-column: 1;
+        margin: 0;
+        font-size: 1.05rem;
+    }
+
+    .pill-add {
+        grid-row: 1;                       /* big Add entry button beside the date */
+        grid-column: 2;
+    }
+
+    .day-bar .day-nav {
+        grid-row: 2;
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1.4fr 1fr;   /* wide arrows, slightly wider Today */
+        gap: 0.5rem;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;                  /* comfortable thumb target */
+        box-sizing: border-box;
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .day-nav .pill:first-child,
+    .day-nav .pill:last-child {
+        font-size: 1.5rem;                 /* bigger arrows */
+        line-height: 1;
+    }
+
+    .pill-text {
+        display: none;
+    }
+}
 /* ---------- TIMELINE ---------- */
 
 /*
