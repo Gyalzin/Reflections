@@ -60,15 +60,35 @@ h1 {
     letter-spacing: 0.04em;
 }
 
-/*
-PARAGRAPH AFTER MAIN HEADING
-Targets the paragraph immediately following h1.
-Reduces the top spacing and gives it a muted, italic appearance.
-*/
-h1 + p {
-    margin-top: 0.2rem;
+.site-header {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+}
+
+.site-header h1 {
+    margin: 0;
+    padding-left: 0.12em;               /* balances the trailing letter-spacing so it looks truly centred */
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-weight: normal;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+}
+
+.site-header .tagline {
+    margin: 0.4rem 0 0;
     color: var(--muted);
+    font-size: 1.05rem;
     font-style: italic;
+}
+
+.site-header::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    margin: 1.2rem auto 0;
+    background: var(--sage);
+    border-radius: 2px;
 }
 
 /*
