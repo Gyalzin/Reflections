@@ -94,7 +94,7 @@ Last Modified: 2026-10-31
     {% endif %}
     {% endif %}
 
-    
+
     <!-- Entry Form Section -->
     
     <section class = "card" id = "entry-form">
@@ -166,15 +166,18 @@ Last Modified: 2026-10-31
     const hasErrors = document.querySelector('.errors');
     const isToday = {{ 'true' if now_top is not none else 'false' }};
 
-    if (!window.location.hash && !justSaved && !hasErrors) {
+    if (hasErrors) {
+        // an invalid submit: go straight to the form so the message is in view
+        document.getElementById('entry-form').scrollIntoView({ behavior: 'instant', block: 'start' });
+    } else if (!window.location.hash && !justSaved) {
         const target = dayTimeline.offsetTop + dayTimeline.offsetHeight * {{ scroll_to }} / 100;
         const barHeight = document.querySelector('.day-bar').offsetHeight;
         const offset = isToday
-            ? (barHeight + window.innerHeight) / 2     // middle of the visible area
-            : barHeight + 60;                          // just below the bar
+            ? (barHeight + window.innerHeight) / 2
+            : barHeight + 60;
         window.scrollTo({ top: target - offset, behavior: 'instant' });
-    }
-</script>
+        }
+    </script>
 
 </body>
 </html>
