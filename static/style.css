@@ -4,7 +4,7 @@ Stores the main colours used throughout the application.
 Changing these values updates the overall colour scheme.
 */
 :root {
-    --bg: #e9dfcc;
+    --bg: #e6d9c1;
     --paper: #f1eee7;
     --ink: #3d3a35;
     --muted: #9a9183;
@@ -79,16 +79,6 @@ h1 {
     color: var(--muted);
     font-size: 1.05rem;
     font-style: italic;
-}
-
-.site-header::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 2px;
-    margin: 1.2rem auto 0;
-    background: var(--sage);
-    border-radius: 2px;
 }
 
 /*
@@ -526,4 +516,35 @@ Styles the form action buttons, including Save, Cancel, and Delete buttons.
 
 .form-actions .danger:hover {
     background: #f7e9e1;
+}
+
+/*
+CARD SECTION
+Styles the card container for the entry form and other content blocks.
+*/
+
+.card {
+    margin: 2rem 0;
+    padding: 1.2rem 1.4rem 1.4rem;
+    background: var(--bg);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 14px;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.04),
+        0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+
+.card input[type="text"],
+.card input[type="datetime-local"],
+.card select,
+.card textarea {
+    background: var(--paper);        /* tinted so the fields stand out from the card */
 }
