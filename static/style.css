@@ -159,7 +159,7 @@ Adds spacing between navigation links and removes underlines.
     border: 1px solid var(--line);
     border-radius: 999px;
     color: var(--sage-dark);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     text-decoration: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     transition: background 0.2s ease, border-color 0.2s ease,
@@ -281,12 +281,32 @@ background, border and border-radius control its appearance.
 */
 .timeline {
     position: relative;
-    height: 1920px;
+    --hour-height: 80px;
+    --hour-line: rgba(0, 0, 0, 0.01);       /* raise 0.05 if the lines are too faint */
+    --gutter: 90px;                         /* width of the label column */
+    --pad: 8px;                              /* space between the divider and the blocks */
+    --lane-start: calc(var(--gutter) + var(--pad));
+    --lane-width: calc(100% - var(--lane-start) - 10px);
+    height: calc(var(--hour-height) * 24);
     margin: 1rem 0 2rem;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 14px;
 }
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--gutter);
+    right: 0;
+                   /* the divider beside the labels */
+    background-image: linear-gradient(to bottom, var(--hour-line) 1px, transparent 1px);
+    background-size: 100% var(--hour-height);           /* one faint line per hour */
+    pointer-events: none;
+}
+
 
 /*
 TIMELINE LABELS
@@ -589,12 +609,12 @@ Styles the journal entries and aligns titles and notes horizontally.
 .journal article {
     margin-bottom: 1rem;
     padding-left: 0.9rem;
-    border-left: 3px solid var(--line);
+    border-left: 3px solid var(--dark);
 }
 
 .journal p {
     margin: 0;
-    white-space: pre-line;
+    
 }
 
 /*
@@ -658,4 +678,34 @@ Styles the card container for the entry form and other content blocks.
 .card select,
 .card textarea {
     background: var(--paper);        /* tinted so the fields stand out from the card */
+}
+
+
+/* RESPONSIVE STYLING
+Adjusts the layout and spacing for smaller screens.
+*/
+@media (max-width: 600px) {
+    body {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .timeline {
+        --gutter: 72px;
+        --pad: 2px;
+    }
+
+    .label {
+        padding-left: 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .block {
+        padding: 3px 6px;
+        font-size: 0.8rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
 }
