@@ -344,6 +344,11 @@ background and border control the block's appearance.
     color: #27352d;
     font-size: 0.85rem;
     text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 /*
@@ -708,4 +713,53 @@ Adjusts the layout and spacing for smaller screens.
     .card {
         padding: 1rem;
     }
+}
+
+/* BLOCK TITLE AND TIME
+Styles the title and time labels within each activity block on the timeline.
+*/
+
+.block-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;       /* "Reading a very long na…" */
+    font-weight: bold;
+}
+
+.block-time {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+/* entries under 30 minutes: one line, name only (times are in the tooltip) */
+.block.short {
+    justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+}
+
+.block.short .block-time {
+    display: none;
+}
+
+.block:focus-visible {
+    outline: 2px solid var(--sage-dark);
+    outline-offset: 2px;
+}
+
+@media (hover: hover) {
+    .block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+        z-index: 4;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .block { transition: none; }
+    .block:hover { transform: none; }
 }

@@ -55,14 +55,16 @@ Last Modified: 2026-10-31
         
 
         {% for e in entries %}
-        <a class="block" href="/edit_entry/{{ e['entry_id'] }}"
+        <a class="block{% if e['short'] %} short{% endif %}" href="/edit_entry/{{ e['entry_id'] }}"
+           title="{{ e['tooltip'] }}"
            style="top: {{ e['top'] }}%; height: {{ e['height'] }}%;
-                    left: calc(var(--lane-start) + var(--lane-width) * {{ e['lane'] }} / {{ e['lanes'] }});
-                    width: calc(var(--lane-width) / {{ e['lanes'] }});">
-            <strong>{{ e["activity_name"] }}</strong>
-            {{ e["start_time"][11:16] }} to {{ e["end_time"][11:16] }}
+                  left: calc(var(--lane-start) + var(--lane-width) * {{ e['lane'] }} / {{ e['lanes'] }});
+                  width: calc(var(--lane-width) / {{ e['lanes'] }});">
+            <span class="block-title">{{ e["activity_name"] }}</span>
+            <span class="block-time">{{ e["time_label"] }} to {{ e["end_label"] }}</span>
         </a>
         {% endfor %}
+
         {% if not entries %}
         <p class = " empty"> Nothing recorded for this day, and that's perfectly okay!</p>
         {% endif %}

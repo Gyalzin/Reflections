@@ -187,6 +187,7 @@ def clock_label (timestamp):
 # Calculates each activity's position and height based on its start and end times.
 # Assigns lanes to overlapping activities so they appear side by side without overlapping.
 # Calculates the number of lanes needed for each group to determine the width of each activity.
+# Returns a list of entries with additional layout information for rendering on the timeline.
 
 def layout_entries(rows):
     entries = []
@@ -200,6 +201,15 @@ def layout_entries(rows):
         entry['height'] = (end - start) / 1440 * 100
         entry['time_label'] = clock_label(entry['start_time'])
         entry['mood_face'] = MOOD_FACES.get(entry['mood'], '')
+        
+        entry['end_label'] = clock_label(entry['end_time'])
+        entry['short'] = (end - start) < 30      # under 30 minutes: show a single line
+        tip = f"{entry['activity_name']} {entry['mood_face']}".strip()
+        tip += f", {entry['time_label']} to {entry['end_label']}"
+        if entry['note']:
+            tip += "\n" + entry['note']
+        entry['tooltip'] = tip
+        
         entries.append(entry)
         
     # give each entry a lane, grouping entries that overlap    
