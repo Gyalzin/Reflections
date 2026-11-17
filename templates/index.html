@@ -85,7 +85,7 @@ Last Modified: 2026-10-31
             {% for e in noted %}
                 <article>
                     <p>
-                        <b>{{ e['time_label'] }}, {{ e['activity_name'] }}</b>&nbsp;{{ e['note'] }}
+                        <b>{{ e['time_label'] }}, {{ e['activity_name'] }}</b>&nbsp;<span style="white-space: pre-line;">{{ e['note'] }}</span>
                     </p>
                 </article>
             {% endfor %}
