@@ -17,15 +17,15 @@ As days turn into weeks and months, people can lose awareness of how they have s
 - Pick an existing activity or create a new one
 - Optional mood (five faces) and optional notes
 - Browse previous and next days, or jump back to today
-- A "now" line on today's timeline, and the view scrolls to a useful spot
-- Friendly validation messages and a gentle save confirmation
+- A "now" line on today's timeline that shows the current time.
+- Validation messages and save confirmation
 - A journal mode that automatically displays below the timeline
 
 ## Screenshots
 
 ### Daily Timeline
 
-<img src="Screenshots/Timeline.png" width="1000">
+<img src="Screenshots/Timeline.png" width="800">
 
 ### Form
 
@@ -76,6 +76,7 @@ schema.sql       Table definitions
 templates/       HTML pages
 static/          CSS
 Docs/            Project overview and requirements
+Screenshots/     Screenshots of user interface
 ```
 
 ## Known limitations
@@ -94,8 +95,8 @@ Docs/            Project overview and requirements
 
 ## What I learned
 
-University taught me about the ineividual components of software engineering, but building this project taught me how to bring those components together.
+University taught me about the individual components of software engineering, but building this project taught me how to bring those components together.
 
 One of the most valuable parts of this project was the planning phase. I spent over three days working on system design, gathering requirements, writing user stories and creating ER diagrams. This helped me establish a clear direction before development and made the implementation process much smoother.
 
-One thing I would improve next time is relying less on AI-generated code and spending more time independently solving implementation problems. I want to strengthen my ability to write, understand and debug code independently.
+One thing I would work on in the future is relying less on AI-generated code and spending more time doing it on my own. I want to improve my ability to write, understand and debug code independently.
