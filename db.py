@@ -7,9 +7,6 @@ This module handles database operations for the Reflections application.
 - Enables foreign key constraints to maintain database relationships.
 - Provides functions for main.py to use in Flask routes.
 Dependencies:sqlite3, pathlib
-Author: Gyalzin Dorji
-Created: 2026-10-23
-Last Modified: 2026-10-31
 """
 
 import sqlite3

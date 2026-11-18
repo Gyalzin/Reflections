@@ -1,9 +1,6 @@
 # This is the main application file for a Flask web application that allows users to log and manage their daily activities, moods, and notes.
 # It imports necessary modules, sets up routes for the application, and defines functions to handle user interactions with the application.
 # The application uses a SQLite database to store activity entries and provides functionality to add, edit, and delete entries.
-# Created: 2026-10-23
-# Last Modified: 2026-10-31
-# Created by: Gyalzin Dorji
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date, timedelta, datetime

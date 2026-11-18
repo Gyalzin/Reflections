@@ -1,19 +1,13 @@
-
 # Reflections
 
 A calm, relaxed daily activity tracker. Instead of measuring productivity, Reflections helps you look back on how you spent your days.
 
-<!-- Add a screenshot: save it in the Docs folder and uncomment the next line -->
+**Status:** MVP Completed – 18 November 2026
 
-<!-- ![Reflections timeline](Docs/screenshot.png) -->
 
 ## Why I built it
 
-As days turn into weeks and months, people can lost awareness of how they have spent their time and the experiences that have shaped their lives. I built this project to help people become more aware on how they use their time. 
-
-![Reflections Timeline](https://file+.vscode-resource.vscode-cdn.net/Users/gyalzindorji/Desktop/Reflections/Docs/Timeline_screenshot.png)
-
-<!-- 2–3 sentences in your own words: the problem, and why a gentle tracker -->
+As days turn into weeks and months, people can lose awareness of how they have spent their time and the experiences that have shaped their lives. I built this project to help people become more aware of how they use their time.
 
 ## Features
 
@@ -25,6 +19,21 @@ As days turn into weeks and months, people can lost awareness of how they have s
 - Browse previous and next days, or jump back to today
 - A "now" line on today's timeline, and the view scrolls to a useful spot
 - Friendly validation messages and a gentle save confirmation
+- A journal mode that automatically displays below the timeline
+
+## Screenshots
+
+### Daily Timeline
+
+<img src="Screenshots/Timeline.png" width="1000">
+
+### Form
+
+<img src="Screenshots/Form.png" width="600">
+
+### Journal
+
+<img src="Screenshots/Journal.png" width="600">
 
 ## Built with
 
@@ -34,23 +43,29 @@ Python, Flask, SQLite, HTML, CSS and a little JavaScript.
 
 1. Clone the repository and open the folder in a terminal.
 2. Create and activate a virtual environment:
+
    ```
    python -m venv .venv
    source .venv/bin/activate
    ```
 3. Install the dependencies:
+
    ```
    pip install -r requirements.txt
    ```
 4. Create the database (this also adds a default "General" category):
+
    ```
    python -c "import db; db.init_db()"
    ```
 5. Start the app:
+
    ```
    python main.py
    ```
-6. Open http://127.0.0.1:5000 in your browser.
+
+   The application runs locally with Flask debug mode enabled.
+6. Open http://127.0.0.1:5001 in your browser.
 
 ## Project structure
 
@@ -65,18 +80,22 @@ Docs/            Project overview and requirements
 
 ## Known limitations
 
-- Time inputs are typed in Safari, which doesn't support stepping through times the way Chrome does.
-- There is no login. It's a single-user app, and data stays in a local SQLite file.
+- Time inputs must be entered manually in Safari, which can be inconvenient.
+- The application has no login functionality and is designed for a single user, with data stored locally in an SQLite database.
+- There is currently no data export or backup functionality, so recorded activities may be lost if the local database is lost.
 
 ## Planned for future versions
 
-- Drag and resize entries on the timeline, and click-to-create
-- Daily and weekly summaries, and insights on frequent activities
-- A category picker (categories are in the database, but every activity currently uses "General")
-- Implent AI for more useful inshights and summaries.
+- Customisation options, including different colour themes and colours for individual activities.
+- User accounts and login functionality.
+- Enhanced daily and weekly summaries, with insights into frequently performed activities.
+- Calendar navigation to select specific dates and revisit past activities.
+- AI integration to provide more meaningful insights and personalised summaries.
 
 ## What I learned
 
-University taught me about the different pieces of puzzles and doing this project taught me how to connect the pieces together. The one thing that worked well was that I spent a lot of time(over 3 days) on the planning phase. This includes system design, gathering user stories, drafting a system requirements and ER diagrams.  This taught me that having a good plan and preparing well makes it easier and smoother in the development process.  One thing that I could have done better was using less AI and writing the code by myself more often. 
+University taught me about the ineividual components of software engineering, but building this project taught me how to bring those components together.
 
-<!-- A few honest lines: what was hard, what you'd do differently -->
+One of the most valuable parts of this project was the planning phase. I spent over three days working on system design, gathering requirements, writing user stories and creating ER diagrams. This helped me establish a clear direction before development and made the implementation process much smoother.
+
+One thing I would improve next time is relying less on AI-generated code and spending more time independently solving implementation problems. I want to strengthen my ability to write, understand and debug code independently.

@@ -1,7 +1,12 @@
+<!--This is the mood.html file for the Reflections app. It provides a macro to display a mood picker with radio buttons for different mood levels.
+The macro takes a current mood value as an argument and generates a fieldset with radio buttons for each mood level (1-5) and an option to skip mood selection.
+The mood levels are represented by emojis and have corresponding titles for accessibility.
+The macro can be imported and used in other templates to allow users to select their mood when adding or editing entries.
+-->
 {% macro mood_picker(current) %}
 <fieldset class="mood-picker">
     <legend>Mood</legend>
-    {% for value, face, name in [(1, '😞', 'Low'), (2, '🙁', 'Meh'), (3, '😐', 'Okay'), (4, '🙂', 'Good'), (5, '😄', 'Great')] %}
+    {% for value, face, name in [(1, '😞', 'Low'), (2, '🙁', 'Meh'), (3, '😐', 'Okay'), (4, '🙂', 'Good'), (5, '😃', 'Great')] %}
     <label title="{{ name }}">
         <input type="radio" name="mood" value="{{ value }}" {% if current == value|string %}checked{% endif %}>
         <span>{{ face }}</span>
